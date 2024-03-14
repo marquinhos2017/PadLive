@@ -74,16 +74,37 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
+  void _playing(AudioPlayer audioplayer) async {
+    for (double i = 0; i <= 1; i += 0.1) {
+      await Future.delayed(const Duration(milliseconds: 500), () {
+        setState(() {
+          audioplayer.setVolume((i));
+        });
+        print(audioplayer.volume);
+      });
+    }
+  }
+
+  Future<void> _stoping(AudioPlayer audioplayer) async {
+    for (double i = 1; i >= 0; i -= 0.1) {
+      await Future.delayed(const Duration(milliseconds: 500), () {
+        setState(() {
+          audioplayer.setVolume((i));
+        });
+        print(audioplayer.volume);
+      });
+    }
+
+    audioplayer.stop();
+  }
+
   void _play_c() {
     setState(() {
       pad_c_bool = !pad_c_bool;
     });
     pad_c.setVolume(0);
     pad_c.play(AssetSource('foundations/c.mp3'));
-    for (double i = 0; i <= 1; i = i + 0.0002) {
-      pad_c.setVolume(i);
-      //print(i);
-    }
+    _playing(pad_c);
 
     print("Playing C");
   }
@@ -92,11 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       pad_c_bool = !pad_c_bool;
     });
-    for (double i = 1; i >= 0; i = i - 0.0001) {
-      pad_c.setVolume(i);
-      // print(i);
-    }
-    pad_c.stop();
+    _stoping(pad_c);
 
     print("Stoping C");
   }
@@ -107,21 +124,14 @@ class _MyHomePageState extends State<MyHomePage> {
     });
     pad_c_sustenido.setVolume(0);
     pad_c_sustenido.play(AssetSource('foundations/c#.mp3'));
-    for (double i = 0; i <= 1; i = i + 0.0005) {
-      pad_c_sustenido.setVolume(i);
-      //print(i);
-    }
+    _playing(pad_c_sustenido);
   }
 
   void _stop_c_sustenido() {
     setState(() {
       pad_c_sustenido_bool = !pad_c_sustenido_bool;
     });
-    for (double i = 1; i >= 0; i = i - 0.0001) {
-      pad_c_sustenido.setVolume(i);
-      // print(i);
-    }
-    pad_c_sustenido.stop();
+    _stoping(pad_c_sustenido);
 
     print("Stoping C#");
   }
@@ -132,10 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
     pad_d.setVolume(0);
     pad_d.play(AssetSource('foundations/d.mp3'));
-    for (double i = 0; i <= 1; i = i + 0.0005) {
-      pad_d.setVolume(i);
-      //print(i);
-    }
+    _playing(pad_d);
 
     print("Playing C");
   }
@@ -144,11 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       pad_d_bool = !pad_d_bool;
     });
-    for (double i = 1; i >= 0; i = i - 0.0002) {
-      pad_d.setVolume(i);
-      // print(i);
-    }
-    pad_d.stop();
+    _stoping(pad_d);
     print("Stoping D");
   }
 
