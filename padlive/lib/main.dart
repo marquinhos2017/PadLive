@@ -75,50 +75,80 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _play_c() {
-    pad_c.play(AssetSource('foundations/c.mp3'));
     setState(() {
       pad_c_bool = !pad_c_bool;
     });
+    pad_c.setVolume(0);
+    pad_c.play(AssetSource('foundations/c.mp3'));
+    for (double i = 0; i <= 1; i = i + 0.0002) {
+      pad_c.setVolume(i);
+      //print(i);
+    }
+
     print("Playing C");
   }
 
   void _stop_c() {
-    pad_c.stop();
     setState(() {
       pad_c_bool = !pad_c_bool;
     });
+    for (double i = 1; i >= 0; i = i - 0.0001) {
+      pad_c.setVolume(i);
+      // print(i);
+    }
+    pad_c.stop();
+
     print("Stoping C");
   }
 
   void _play_c_sustenido() {
-    pad_c_sustenido.play(AssetSource('foundations/c#.mp3'));
     setState(() {
-      pad_c_sustenido_bool = !pad_c_sustenido_bool; // Toggle the value
+      pad_c_sustenido_bool = !pad_c_sustenido_bool;
     });
-    print("Playing C#");
+    pad_c_sustenido.setVolume(0);
+    pad_c_sustenido.play(AssetSource('foundations/c#.mp3'));
+    for (double i = 0; i <= 1; i = i + 0.0005) {
+      pad_c_sustenido.setVolume(i);
+      //print(i);
+    }
   }
 
   void _stop_c_sustenido() {
-    pad_c_sustenido.stop();
     setState(() {
-      pad_c_sustenido_bool = !pad_c_sustenido_bool; // Toggle the value
+      pad_c_sustenido_bool = !pad_c_sustenido_bool;
     });
+    for (double i = 1; i >= 0; i = i - 0.0001) {
+      pad_c_sustenido.setVolume(i);
+      // print(i);
+    }
+    pad_c_sustenido.stop();
+
     print("Stoping C#");
   }
 
   void _play_d() {
-    pad_d.play(AssetSource('foundations/d.mp3'));
     setState(() {
-      pad_d_bool = !pad_d_bool; // Toggle the value
+      pad_d_bool = !pad_d_bool;
     });
-    print("Playing D");
+    pad_d.setVolume(0);
+    pad_d.play(AssetSource('foundations/d.mp3'));
+    for (double i = 0; i <= 1; i = i + 0.0005) {
+      pad_d.setVolume(i);
+      //print(i);
+    }
+
+    print("Playing C");
   }
 
   void _stop_d() {
-    pad_d.stop();
     setState(() {
-      pad_d_bool = !pad_d_bool; // Toggle the value
+      pad_d_bool = !pad_d_bool;
     });
+    for (double i = 1; i >= 0; i = i - 0.0002) {
+      pad_d.setVolume(i);
+      // print(i);
+    }
+    pad_d.stop();
     print("Stoping D");
   }
 
@@ -276,7 +306,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             Container(
               child: Image.asset('assets/logo.png'),
-              margin: EdgeInsets.only(bottom: 24),
+              margin: EdgeInsets.only(bottom: 24, top: 124),
             ),
             Container(
               margin: EdgeInsets.only(bottom: 20),
@@ -294,6 +324,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     style: ButtonStyle(
+                      splashFactory: NoSplash.splashFactory,
                       fixedSize: MaterialStateProperty.all<Size>(Size(90, 90)),
 
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -452,6 +483,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     style: ButtonStyle(
+                      splashFactory: NoSplash.splashFactory,
                       fixedSize: MaterialStateProperty.all<Size>(Size(90, 90)),
 
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -901,6 +933,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         if (pad_eb_bool == true) {
                           _stop_eb();
                         }
+                        if (pad_e_bool == true) {
+                          _stop_e();
+                        }
                         if (pad_f_bool == true) {
                           _stop_f();
                         }
@@ -1251,7 +1286,43 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-            )
+            ),
+            ElevatedButton(
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                          side: BorderSide(color: Colors.white))),
+                  backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                    (Set<MaterialState> states) {
+                      return Colors.transparent;
+                    },
+                  ),
+                ),
+                onPressed: () {
+                  setState(() {
+                    pad_d_bool = false;
+                    pad_c_bool = false;
+                    pad_c_sustenido_bool = false;
+                  });
+                  for (double i = 1; i >= 0; i = i - 0.0001) {
+                    pad_c.setVolume(i);
+                    pad_c_sustenido.setVolume(i);
+                    pad_d.setVolume(i);
+
+                    // print(i);
+                  }
+                  pad_c.stop();
+                  pad_c_sustenido.stop();
+                  pad_d.stop();
+                },
+                child: Text(
+                  "END",
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.white,
+                  ),
+                )),
           ],
         ),
       ),
