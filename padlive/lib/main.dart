@@ -59,6 +59,15 @@ class _MyHomePageState extends State<MyHomePage> {
   final pad_ab = AudioPlayer();
   bool pad_ab_bool = false;
 
+  final pad_a = AudioPlayer();
+  bool pad_a_bool = false;
+
+  final pad_bb = AudioPlayer();
+  bool pad_bb_bool = false;
+
+  final pad_b = AudioPlayer();
+  bool pad_b_bool = false;
+
   @override
   void dispose() {
     pad_c.dispose();
@@ -209,6 +218,54 @@ class _MyHomePageState extends State<MyHomePage> {
     print("Stoping Gb");
   }
 
+  void _play_a() {
+    pad_a.play(AssetSource('foundations/a.mp3'));
+    setState(() {
+      pad_a_bool = !pad_a_bool; // Toggle the value
+    });
+    print("Playing A");
+  }
+
+  void _stop_a() {
+    pad_a.stop();
+    setState(() {
+      pad_a_bool = !pad_a_bool; // Toggle the value
+    });
+    print("Stoping A");
+  }
+
+  void _play_bb() {
+    pad_bb.play(AssetSource('foundations/bb.mp3'));
+    setState(() {
+      pad_bb_bool = !pad_bb_bool; // Toggle the value
+    });
+    print("Playing A");
+  }
+
+  void _stop_bb() {
+    pad_bb.stop();
+    setState(() {
+      pad_bb_bool = !pad_bb_bool; // Toggle the value
+    });
+    print("Stoping A");
+  }
+
+  void _play_b() {
+    pad_b.play(AssetSource('foundations/b.mp3'));
+    setState(() {
+      pad_b_bool = !pad_b_bool; // Toggle the value
+    });
+    print("Playing A");
+  }
+
+  void _stop_b() {
+    pad_b.stop();
+    setState(() {
+      pad_b_bool = !pad_b_bool; // Toggle the value
+    });
+    print("Stoping A");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -290,6 +347,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         if (pad_ab_bool == true) {
                           _stop_ab();
                         }
+                        if (pad_a_bool == true) {
+                          _stop_a();
+                        }
+                        if (pad_bb_bool == true) {
+                          _stop_bb();
+                        }
+                        if (pad_b_bool == true) {
+                          _stop_b();
+                        }
                       } else {
                         _stop_c();
                       }
@@ -361,6 +427,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         if (pad_ab_bool == true) {
                           _stop_ab();
                         }
+                        if (pad_a_bool == true) {
+                          _stop_a();
+                        }
+                        if (pad_bb_bool == true) {
+                          _stop_bb();
+                        }
+                        if (pad_b_bool == true) {
+                          _stop_b();
+                        }
                       } else {
                         _stop_c_sustenido();
                       }
@@ -430,6 +505,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         if (pad_ab_bool == true) {
                           _stop_ab();
                         }
+                        if (pad_a_bool == true) {
+                          _stop_a();
+                        }
+                        if (pad_bb_bool == true) {
+                          _stop_bb();
+                        }
+                        if (pad_b_bool == true) {
+                          _stop_b();
+                        }
                       } else {
                         _stop_d();
                       }
@@ -486,7 +570,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         _play_eb();
                         if (pad_c_bool == true) {
                           _stop_c();
-                          print('as');
                         }
                         if (pad_c_sustenido_bool == true) {
                           _stop_c_sustenido();
@@ -508,6 +591,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         }
                         if (pad_ab_bool == true) {
                           _stop_ab();
+                        }
+                        if (pad_a_bool == true) {
+                          _stop_a();
+                        }
+                        if (pad_bb_bool == true) {
+                          _stop_bb();
+                        }
+                        if (pad_b_bool == true) {
+                          _stop_b();
                         }
                       } else {
                         _stop_eb();
@@ -578,6 +670,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         if (pad_ab_bool == true) {
                           _stop_ab();
                         }
+                        if (pad_a_bool == true) {
+                          _stop_a();
+                        }
+                        if (pad_bb_bool == true) {
+                          _stop_bb();
+                        }
+                        if (pad_b_bool == true) {
+                          _stop_b();
+                        }
                       } else {
                         _stop_e();
                       }
@@ -646,6 +747,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         }
                         if (pad_ab_bool == true) {
                           _stop_ab();
+                        }
+                        if (pad_a_bool == true) {
+                          _stop_a();
+                        }
+                        if (pad_bb_bool == true) {
+                          _stop_bb();
+                        }
+                        if (pad_b_bool == true) {
+                          _stop_b();
                         }
                       } else {
                         _stop_f();
@@ -725,6 +835,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         if (pad_ab_bool == true) {
                           _stop_ab();
                         }
+                        if (pad_a_bool == true) {
+                          _stop_a();
+                        }
+                        if (pad_bb_bool == true) {
+                          _stop_bb();
+                        }
+                        if (pad_b_bool == true) {
+                          _stop_b();
+                        }
                       } else {
                         _stop_gb();
                       }
@@ -790,6 +909,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         }
                         if (pad_ab_bool == true) {
                           _stop_ab();
+                        }
+                        if (pad_a_bool == true) {
+                          _stop_a();
+                        }
+                        if (pad_bb_bool == true) {
+                          _stop_bb();
+                        }
+                        if (pad_b_bool == true) {
+                          _stop_b();
                         }
                       } else {
                         _stop_g();
@@ -861,8 +989,263 @@ class _MyHomePageState extends State<MyHomePage> {
                         if (pad_gb_bool == true) {
                           _stop_gb();
                         }
+                        if (pad_a_bool == true) {
+                          _stop_a();
+                        }
+                        if (pad_bb_bool == true) {
+                          _stop_bb();
+                        }
+                        if (pad_b_bool == true) {
+                          _stop_b();
+                        }
                       } else {
                         _stop_ab();
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton(
+                    child: Center(
+                      child: Text(
+                        "A",
+                        style: TextStyle(
+                          fontSize: 28,
+                          color: pad_a_bool == true ? Colors.red : Colors.white,
+                        ),
+                      ),
+                    ),
+                    style: ButtonStyle(
+                      fixedSize: MaterialStateProperty.all<Size>(Size(90, 90)),
+
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                              side: BorderSide(
+                                  color: pad_a_bool == true
+                                      ? Colors.red
+                                      : Colors.white))),
+                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                        (Set<MaterialState> states) {
+                          if (pad_a_bool == true) {
+                            return Colors.transparent;
+                          } else {
+                            // Return another color if the condition is false
+                            return Colors
+                                .transparent; // Or any other color you prefer
+                          }
+                        },
+                      ),
+                      elevation:
+                          MaterialStateProperty.all(0), // Set elevation to 0
+                      overlayColor: MaterialStateProperty.all(
+                          Colors.transparent), // Remove overlay color
+                      // Add other properties as needed
+                    ),
+                    onPressed: () {
+                      if (pad_a_bool == false) {
+                        _play_a();
+                        if (pad_c_bool == true) {
+                          _stop_c();
+                        }
+                        if (pad_c_sustenido_bool == true) {
+                          _stop_c_sustenido();
+                        }
+                        if (pad_d_bool == true) {
+                          _stop_d();
+                        }
+                        if (pad_eb_bool == true) {
+                          _stop_eb();
+                        }
+                        if (pad_e_bool == true) {
+                          _stop_e();
+                        }
+                        if (pad_f_bool == true) {
+                          _stop_f();
+                        }
+                        if (pad_gb_bool == true) {
+                          _stop_gb();
+                        }
+                        if (pad_g_bool == true) {
+                          _stop_g();
+                        }
+                        if (pad_ab_bool == true) {
+                          _stop_ab();
+                        }
+                        if (pad_bb_bool == true) {
+                          _stop_bb();
+                        }
+                        if (pad_b_bool == true) {
+                          _stop_b();
+                        }
+                      } else {
+                        _stop_a();
+                      }
+                    },
+                  ),
+                  ElevatedButton(
+                    child: Center(
+                      child: Text(
+                        "Bb",
+                        style: TextStyle(
+                          fontSize: 28,
+                          color:
+                              pad_bb_bool == true ? Colors.red : Colors.white,
+                        ),
+                      ),
+                    ),
+                    style: ButtonStyle(
+                      fixedSize: MaterialStateProperty.all<Size>(Size(90, 90)),
+
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                              side: BorderSide(
+                                  color: pad_bb_bool == true
+                                      ? Colors.red
+                                      : Colors.white))),
+                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                        (Set<MaterialState> states) {
+                          if (pad_bb_bool == true) {
+                            return Colors.transparent;
+                          } else {
+                            // Return another color if the condition is false
+                            return Colors
+                                .transparent; // Or any other color you prefer
+                          }
+                        },
+                      ),
+                      elevation:
+                          MaterialStateProperty.all(0), // Set elevation to 0
+                      overlayColor: MaterialStateProperty.all(
+                          Colors.transparent), // Remove overlay color
+                      // Add other properties as needed
+                    ),
+                    onPressed: () {
+                      if (pad_bb_bool == false) {
+                        _play_bb();
+                        if (pad_c_bool == true) {
+                          _stop_c();
+                        }
+                        if (pad_c_sustenido_bool == true) {
+                          _stop_c_sustenido();
+                        }
+                        if (pad_d_bool == true) {
+                          _stop_d();
+                        }
+                        if (pad_eb_bool == true) {
+                          _stop_eb();
+                        }
+                        if (pad_e_bool == true) {
+                          _stop_e();
+                        }
+                        if (pad_f_bool == true) {
+                          _stop_f();
+                        }
+                        if (pad_gb_bool == true) {
+                          _stop_gb();
+                        }
+                        if (pad_g_bool == true) {
+                          _stop_g();
+                        }
+                        if (pad_ab_bool == true) {
+                          _stop_ab();
+                        }
+                        if (pad_a_bool == true) {
+                          _stop_a();
+                        }
+                        if (pad_b_bool == true) {
+                          _stop_b();
+                        }
+                      } else {
+                        _stop_bb();
+                      }
+                    },
+                  ),
+                  ElevatedButton(
+                    child: Center(
+                      child: Text(
+                        "B",
+                        style: TextStyle(
+                          fontSize: 28,
+                          color: pad_b_bool == true ? Colors.red : Colors.white,
+                        ),
+                      ),
+                    ),
+                    style: ButtonStyle(
+                      fixedSize: MaterialStateProperty.all<Size>(Size(90, 90)),
+
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                              side: BorderSide(
+                                  color: pad_b_bool == true
+                                      ? Colors.red
+                                      : Colors.white))),
+                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                        (Set<MaterialState> states) {
+                          if (pad_b_bool == true) {
+                            return Colors.transparent;
+                          } else {
+                            // Return another color if the condition is false
+                            return Colors
+                                .transparent; // Or any other color you prefer
+                          }
+                        },
+                      ),
+                      elevation:
+                          MaterialStateProperty.all(0), // Set elevation to 0
+                      overlayColor: MaterialStateProperty.all(
+                          Colors.transparent), // Remove overlay color
+                      // Add other properties as needed
+                    ),
+                    onPressed: () {
+                      if (pad_b_bool == false) {
+                        _play_b();
+                        if (pad_c_bool == true) {
+                          _stop_c();
+                        }
+                        if (pad_c_sustenido_bool == true) {
+                          _stop_c_sustenido();
+                        }
+                        if (pad_d_bool == true) {
+                          _stop_d();
+                        }
+                        if (pad_eb_bool == true) {
+                          _stop_eb();
+                        }
+                        if (pad_e_bool == true) {
+                          _stop_e();
+                        }
+                        if (pad_f_bool == true) {
+                          _stop_f();
+                        }
+                        if (pad_gb_bool == true) {
+                          _stop_gb();
+                        }
+                        if (pad_g_bool == true) {
+                          _stop_g();
+                        }
+                        if (pad_ab_bool == true) {
+                          _stop_ab();
+                        }
+                        if (pad_a_bool == true) {
+                          _stop_a();
+                        }
+                        if (pad_bb_bool == true) {
+                          _stop_bb();
+                          if (pad_gb_bool == true) {
+                            _stop_gb();
+                          }
+                        }
+                      } else {
+                        _stop_b();
                       }
                     },
                   ),
