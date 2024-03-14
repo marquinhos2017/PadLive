@@ -74,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
-  void _playing(AudioPlayer audioplayer) async {
+  Future<void> _playing(AudioPlayer audioplayer) async {
     for (double i = 0; i <= 1; i += 0.1) {
       await Future.delayed(const Duration(milliseconds: 500), () {
         setState(() {
@@ -1353,16 +1353,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       pad_c_bool = false;
                       pad_c_sustenido_bool = false;
                     });
-                    for (double i = 1; i >= 0; i = i - 0.0001) {
-                      pad_c.setVolume(i);
-                      pad_c_sustenido.setVolume(i);
-                      pad_d.setVolume(i);
-
-                      // print(i);
-                    }
-                    pad_c.stop();
-                    pad_c_sustenido.stop();
-                    pad_d.stop();
+                    _stoping(pad_c);
+                    _stoping(pad_c_sustenido);
+                    _stoping(pad_d);
                   },
                   child: Text(
                     "END",
