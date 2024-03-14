@@ -300,1030 +300,1076 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Padding(
-        padding: const EdgeInsets.all(36.0),
-        child: Column(
-          children: [
-            Container(
-              child: Image.asset('assets/logo.png'),
-              margin: EdgeInsets.only(bottom: 24, top: 124),
-            ),
-            Container(
-              margin: EdgeInsets.only(bottom: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ElevatedButton(
-                    child: Center(
-                      child: Text(
-                        "C",
-                        style: TextStyle(
-                          fontSize: 28,
-                          color: pad_c_bool == true ? Colors.red : Colors.white,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                child: Image.asset('assets/logo.png'),
+                margin: EdgeInsets.only(bottom: 24),
+              ),
+              Container(
+                margin: EdgeInsets.only(bottom: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                      child: Center(
+                        child: Text(
+                          "C",
+                          style: TextStyle(
+                            fontSize: 28,
+                            color:
+                                pad_c_bool == true ? Colors.red : Colors.white,
+                          ),
                         ),
                       ),
-                    ),
-                    style: ButtonStyle(
-                      splashFactory: NoSplash.splashFactory,
-                      fixedSize: MaterialStateProperty.all<Size>(Size(90, 90)),
+                      style: ButtonStyle(
+                        splashFactory: NoSplash.splashFactory,
+                        fixedSize:
+                            MaterialStateProperty.all<Size>(Size(90, 90)),
 
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(
-                                  color: pad_c_bool == true
-                                      ? Colors.red
-                                      : Colors.white))),
-                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
-                          if (pad_c_bool == true) {
-                            return Colors.transparent;
-                          } else {
-                            // Return another color if the condition is false
-                            return Colors
-                                .transparent; // Or any other color you prefer
-                          }
-                        },
-                      ),
-                      elevation:
-                          MaterialStateProperty.all(0), // Set elevation to 0
-                      overlayColor: MaterialStateProperty.all(
-                          Colors.transparent), // Remove overlay color
-                      // Add other properties as needed
-                    ),
-                    onPressed: () {
-                      if (pad_c_bool == false) {
-                        _play_c();
-                        if (pad_c_sustenido_bool == true) {
-                          _stop_c_sustenido();
-                        }
-                        if (pad_d_bool == true) {
-                          _stop_d();
-                        }
-                        if (pad_eb_bool == true) {
-                          _stop_eb();
-                        }
-                        if (pad_e_bool == true) {
-                          _stop_e();
-                        }
-                        if (pad_f_bool == true) {
-                          _stop_f();
-                        }
-                        if (pad_gb_bool == true) {
-                          _stop_gb();
-                        }
-                        if (pad_g_bool == true) {
-                          _stop_g();
-                        }
-                        if (pad_ab_bool == true) {
-                          _stop_ab();
-                        }
-                        if (pad_a_bool == true) {
-                          _stop_a();
-                        }
-                        if (pad_bb_bool == true) {
-                          _stop_bb();
-                        }
-                        if (pad_b_bool == true) {
-                          _stop_b();
-                        }
-                      } else {
-                        _stop_c();
-                      }
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Center(
-                      child: Text(
-                        "C#",
-                        style: TextStyle(
-                          fontSize: 28,
-                          color: pad_c_sustenido_bool == true
-                              ? Colors.red
-                              : Colors.white,
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: BorderSide(
+                                        color: pad_c_bool == true
+                                            ? Colors.red
+                                            : Colors.white))),
+                        backgroundColor:
+                            MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) {
+                            if (pad_c_bool == true) {
+                              return Colors.transparent;
+                            } else {
+                              // Return another color if the condition is false
+                              return Colors
+                                  .transparent; // Or any other color you prefer
+                            }
+                          },
                         ),
+                        elevation:
+                            MaterialStateProperty.all(0), // Set elevation to 0
+                        overlayColor: MaterialStateProperty.all(
+                            Colors.transparent), // Remove overlay color
+                        // Add other properties as needed
                       ),
-                    ),
-                    style: ButtonStyle(
-                      fixedSize: MaterialStateProperty.all<Size>(Size(90, 90)),
-
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(
-                                  color: pad_c_sustenido_bool == true
-                                      ? Colors.red
-                                      : Colors.white))),
-                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
+                      onPressed: () {
+                        if (pad_c_bool == false) {
+                          _play_c();
                           if (pad_c_sustenido_bool == true) {
-                            return Colors.transparent;
-                          } else {
-                            // Return another color if the condition is false
-                            return Colors
-                                .transparent; // Or any other color you prefer
+                            _stop_c_sustenido();
                           }
-                        },
-                      ),
-                      elevation:
-                          MaterialStateProperty.all(0), // Set elevation to 0
-                      overlayColor: MaterialStateProperty.all(
-                          Colors.transparent), // Remove overlay color
-                      // Add other properties as needed
-                    ),
-                    onPressed: () {
-                      if (pad_c_sustenido_bool == false) {
-                        _play_c_sustenido();
-                        if (pad_c_bool == true) {
-                          _stop_c();
-                        }
-                        if (pad_d_bool == true) {
-                          _stop_d();
-                        }
-                        if (pad_eb_bool == true) {
-                          _stop_eb();
-                        }
-                        if (pad_e_bool == true) {
-                          _stop_e();
-                        }
-                        if (pad_f_bool == true) {
-                          _stop_f();
-                        }
-                        if (pad_gb_bool == true) {
-                          _stop_gb();
-                        }
-                        if (pad_g_bool == true) {
-                          _stop_g();
-                        }
-                        if (pad_ab_bool == true) {
-                          _stop_ab();
-                        }
-                        if (pad_a_bool == true) {
-                          _stop_a();
-                        }
-                        if (pad_bb_bool == true) {
-                          _stop_bb();
-                        }
-                        if (pad_b_bool == true) {
-                          _stop_b();
-                        }
-                      } else {
-                        _stop_c_sustenido();
-                      }
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Center(
-                      child: Text(
-                        "D",
-                        style: TextStyle(
-                          fontSize: 28,
-                          color: pad_d_bool == true ? Colors.red : Colors.white,
-                        ),
-                      ),
-                    ),
-                    style: ButtonStyle(
-                      splashFactory: NoSplash.splashFactory,
-                      fixedSize: MaterialStateProperty.all<Size>(Size(90, 90)),
-
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(
-                                  color: pad_d_bool == true
-                                      ? Colors.red
-                                      : Colors.white))),
-                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
                           if (pad_d_bool == true) {
-                            return Colors.transparent;
-                          } else {
-                            // Return another color if the condition is false
-                            return Colors
-                                .transparent; // Or any other color you prefer
+                            _stop_d();
                           }
-                        },
-                      ),
-                      elevation:
-                          MaterialStateProperty.all(0), // Set elevation to 0
-                      overlayColor: MaterialStateProperty.all(
-                          Colors.transparent), // Remove overlay color
-                      // Add other properties as needed
-                    ),
-                    onPressed: () {
-                      if (pad_d_bool == false) {
-                        _play_d();
-                        if (pad_c_bool == true) {
-                          _stop_c();
-                        }
-                        if (pad_c_sustenido_bool == true) {
-                          _stop_c_sustenido();
-                        }
-                        if (pad_eb_bool == true) {
-                          _stop_eb();
-                        }
-                        if (pad_e_bool == true) {
-                          _stop_e();
-                        }
-                        if (pad_f_bool == true) {
-                          _stop_f();
-                        }
-                        if (pad_gb_bool == true) {
-                          _stop_gb();
-                        }
-                        if (pad_g_bool == true) {
-                          _stop_g();
-                        }
-                        if (pad_ab_bool == true) {
-                          _stop_ab();
-                        }
-                        if (pad_a_bool == true) {
-                          _stop_a();
-                        }
-                        if (pad_bb_bool == true) {
-                          _stop_bb();
-                        }
-                        if (pad_b_bool == true) {
-                          _stop_b();
-                        }
-                      } else {
-                        _stop_d();
-                      }
-                    },
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(bottom: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ElevatedButton(
-                    child: Center(
-                      child: Text(
-                        "Eb",
-                        style: TextStyle(
-                          fontSize: 28,
-                          color:
-                              pad_eb_bool == true ? Colors.red : Colors.white,
-                        ),
-                      ),
-                    ),
-                    style: ButtonStyle(
-                      fixedSize: MaterialStateProperty.all<Size>(Size(90, 90)),
-
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(
-                                  color: pad_eb_bool == true
-                                      ? Colors.red
-                                      : Colors.white))),
-                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
                           if (pad_eb_bool == true) {
-                            return Colors.transparent;
-                          } else {
-                            // Return another color if the condition is false
-                            return Colors
-                                .transparent; // Or any other color you prefer
+                            _stop_eb();
                           }
-                        },
-                      ),
-                      elevation:
-                          MaterialStateProperty.all(0), // Set elevation to 0
-                      overlayColor: MaterialStateProperty.all(
-                          Colors.transparent), // Remove overlay color
-                      // Add other properties as needed
-                    ),
-                    onPressed: () {
-                      if (pad_eb_bool == false) {
-                        _play_eb();
-                        if (pad_c_bool == true) {
-                          _stop_c();
-                        }
-                        if (pad_c_sustenido_bool == true) {
-                          _stop_c_sustenido();
-                        }
-                        if (pad_d_bool == true) {
-                          _stop_d();
-                        }
-                        if (pad_e_bool == true) {
-                          _stop_e();
-                        }
-                        if (pad_f_bool == true) {
-                          _stop_f();
-                        }
-                        if (pad_gb_bool == true) {
-                          _stop_gb();
-                        }
-                        if (pad_g_bool == true) {
-                          _stop_g();
-                        }
-                        if (pad_ab_bool == true) {
-                          _stop_ab();
-                        }
-                        if (pad_a_bool == true) {
-                          _stop_a();
-                        }
-                        if (pad_bb_bool == true) {
-                          _stop_bb();
-                        }
-                        if (pad_b_bool == true) {
-                          _stop_b();
-                        }
-                      } else {
-                        _stop_eb();
-                      }
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Center(
-                      child: Text(
-                        "E",
-                        style: TextStyle(
-                          fontSize: 28,
-                          color: pad_e_bool == true ? Colors.red : Colors.white,
-                        ),
-                      ),
-                    ),
-                    style: ButtonStyle(
-                      fixedSize: MaterialStateProperty.all<Size>(Size(90, 90)),
-
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(
-                                  color: pad_e_bool == true
-                                      ? Colors.red
-                                      : Colors.white))),
-                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
                           if (pad_e_bool == true) {
-                            return Colors.transparent;
-                          } else {
-                            // Return another color if the condition is false
-                            return Colors
-                                .transparent; // Or any other color you prefer
+                            _stop_e();
                           }
-                        },
-                      ),
-                      elevation:
-                          MaterialStateProperty.all(0), // Set elevation to 0
-                      overlayColor: MaterialStateProperty.all(
-                          Colors.transparent), // Remove overlay color
-                      // Add other properties as needed
-                    ),
-                    onPressed: () {
-                      if (pad_e_bool == false) {
-                        _play_e();
-                        if (pad_c_bool == true) {
-                          _stop_c();
-                        }
-                        if (pad_c_sustenido_bool == true) {
-                          _stop_c_sustenido();
-                        }
-                        if (pad_d_bool == true) {
-                          _stop_d();
-                        }
-                        if (pad_eb_bool == true) {
-                          _stop_eb();
-                        }
-                        if (pad_f_bool == true) {
-                          _stop_f();
-                        }
-                        if (pad_gb_bool == true) {
-                          _stop_gb();
-                        }
-                        if (pad_g_bool == true) {
-                          _stop_g();
-                        }
-                        if (pad_ab_bool == true) {
-                          _stop_ab();
-                        }
-                        if (pad_a_bool == true) {
-                          _stop_a();
-                        }
-                        if (pad_bb_bool == true) {
-                          _stop_bb();
-                        }
-                        if (pad_b_bool == true) {
-                          _stop_b();
-                        }
-                      } else {
-                        _stop_e();
-                      }
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Center(
-                      child: Text(
-                        "F",
-                        style: TextStyle(
-                          fontSize: 28,
-                          color: pad_f_bool == true ? Colors.red : Colors.white,
-                        ),
-                      ),
-                    ),
-                    style: ButtonStyle(
-                      fixedSize: MaterialStateProperty.all<Size>(Size(90, 90)),
-
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(
-                                  color: pad_f_bool == true
-                                      ? Colors.red
-                                      : Colors.white))),
-                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
                           if (pad_f_bool == true) {
-                            return Colors.transparent;
-                          } else {
-                            // Return another color if the condition is false
-                            return Colors
-                                .transparent; // Or any other color you prefer
+                            _stop_f();
                           }
-                        },
-                      ),
-                      elevation:
-                          MaterialStateProperty.all(0), // Set elevation to 0
-                      overlayColor: MaterialStateProperty.all(
-                          Colors.transparent), // Remove overlay color
-                      // Add other properties as needed
-                    ),
-                    onPressed: () {
-                      if (pad_f_bool == false) {
-                        _play_f();
-                        if (pad_c_bool == true) {
-                          _stop_c();
-                        }
-                        if (pad_c_sustenido_bool == true) {
-                          _stop_c_sustenido();
-                        }
-                        if (pad_d_bool == true) {
-                          _stop_d();
-                        }
-                        if (pad_eb_bool == true) {
-                          _stop_eb();
-                        }
-                        if (pad_e_bool == true) {
-                          _stop_e();
-                        }
-                        if (pad_gb_bool == true) {
-                          _stop_gb();
-                        }
-                        if (pad_g_bool == true) {
-                          _stop_g();
-                        }
-                        if (pad_ab_bool == true) {
-                          _stop_ab();
-                        }
-                        if (pad_a_bool == true) {
-                          _stop_a();
-                        }
-                        if (pad_bb_bool == true) {
-                          _stop_bb();
-                        }
-                        if (pad_b_bool == true) {
-                          _stop_b();
-                        }
-                      } else {
-                        _stop_f();
-                      }
-                    },
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(bottom: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ElevatedButton(
-                    child: Center(
-                      child: Text(
-                        "Gb",
-                        style: TextStyle(
-                          fontSize: 28,
-                          color:
-                              pad_gb_bool == true ? Colors.red : Colors.white,
-                        ),
-                      ),
-                    ),
-                    style: ButtonStyle(
-                      fixedSize: MaterialStateProperty.all<Size>(Size(90, 90)),
-
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(
-                                  color: pad_gb_bool == true
-                                      ? Colors.red
-                                      : Colors.white))),
-                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
-                          if (pad_gb_bool == true) {
-                            return Colors.transparent;
-                          } else {
-                            // Return another color if the condition is false
-                            return Colors
-                                .transparent; // Or any other color you prefer
-                          }
-                        },
-                      ),
-                      elevation:
-                          MaterialStateProperty.all(0), // Set elevation to 0
-                      overlayColor: MaterialStateProperty.all(
-                          Colors.transparent), // Remove overlay color
-                      // Add other properties as needed
-                    ),
-                    onPressed: () {
-                      if (pad_gb_bool == false) {
-                        _play_gb();
-                        if (pad_c_bool == true) {
-                          _stop_c();
-                        }
-                        if (pad_c_sustenido_bool == true) {
-                          _stop_c_sustenido();
-                        }
-                        if (pad_d_bool == true) {
-                          _stop_d();
-                        }
-                        if (pad_eb_bool == true) {
-                          _stop_eb();
-                        }
-                        if (pad_e_bool == true) {
-                          _stop_e();
-                        }
-                        if (pad_f_bool == true) {
-                          _stop_f();
-                        }
-                        if (pad_g_bool == true) {
-                          _stop_g();
-                        }
-                        if (pad_ab_bool == true) {
-                          _stop_ab();
-                        }
-                        if (pad_a_bool == true) {
-                          _stop_a();
-                        }
-                        if (pad_bb_bool == true) {
-                          _stop_bb();
-                        }
-                        if (pad_b_bool == true) {
-                          _stop_b();
-                        }
-                      } else {
-                        _stop_gb();
-                      }
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Center(
-                      child: Text(
-                        "G",
-                        style: TextStyle(
-                          fontSize: 28,
-                          color: pad_g_bool == true ? Colors.red : Colors.white,
-                        ),
-                      ),
-                    ),
-                    style: ButtonStyle(
-                      fixedSize: MaterialStateProperty.all<Size>(Size(90, 90)),
-
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(
-                                  color: pad_g_bool == true
-                                      ? Colors.red
-                                      : Colors.white))),
-                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
-                          if (pad_g_bool == true) {
-                            return Colors.transparent;
-                          } else {
-                            // Return another color if the condition is false
-                            return Colors
-                                .transparent; // Or any other color you prefer
-                          }
-                        },
-                      ),
-                      elevation:
-                          MaterialStateProperty.all(0), // Set elevation to 0
-                      overlayColor: MaterialStateProperty.all(
-                          Colors.transparent), // Remove overlay color
-                      // Add other properties as needed
-                    ),
-                    onPressed: () {
-                      if (pad_g_bool == false) {
-                        _play_g();
-                        if (pad_c_bool == true) {
-                          _stop_c();
-                        }
-                        if (pad_c_sustenido_bool == true) {
-                          _stop_c_sustenido();
-                        }
-                        if (pad_d_bool == true) {
-                          _stop_d();
-                        }
-                        if (pad_eb_bool == true) {
-                          _stop_eb();
-                        }
-                        if (pad_e_bool == true) {
-                          _stop_e();
-                        }
-                        if (pad_f_bool == true) {
-                          _stop_f();
-                        }
-                        if (pad_gb_bool == true) {
-                          _stop_gb();
-                        }
-                        if (pad_ab_bool == true) {
-                          _stop_ab();
-                        }
-                        if (pad_a_bool == true) {
-                          _stop_a();
-                        }
-                        if (pad_bb_bool == true) {
-                          _stop_bb();
-                        }
-                        if (pad_b_bool == true) {
-                          _stop_b();
-                        }
-                      } else {
-                        _stop_g();
-                      }
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Center(
-                      child: Text(
-                        "Ab",
-                        style: TextStyle(
-                          fontSize: 28,
-                          color:
-                              pad_ab_bool == true ? Colors.red : Colors.white,
-                        ),
-                      ),
-                    ),
-                    style: ButtonStyle(
-                      fixedSize: MaterialStateProperty.all<Size>(Size(90, 90)),
-
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(
-                                  color: pad_ab_bool == true
-                                      ? Colors.red
-                                      : Colors.white))),
-                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
-                          if (pad_ab_bool == true) {
-                            return Colors.transparent;
-                          } else {
-                            // Return another color if the condition is false
-                            return Colors
-                                .transparent; // Or any other color you prefer
-                          }
-                        },
-                      ),
-                      elevation:
-                          MaterialStateProperty.all(0), // Set elevation to 0
-                      overlayColor: MaterialStateProperty.all(
-                          Colors.transparent), // Remove overlay color
-                      // Add other properties as needed
-                    ),
-                    onPressed: () {
-                      if (pad_ab_bool == false) {
-                        _play_ab();
-                        if (pad_c_bool == true) {
-                          _stop_c();
-                        }
-                        if (pad_c_sustenido_bool == true) {
-                          _stop_c_sustenido();
-                        }
-                        if (pad_d_bool == true) {
-                          _stop_d();
-                        }
-                        if (pad_eb_bool == true) {
-                          _stop_eb();
-                        }
-                        if (pad_e_bool == true) {
-                          _stop_e();
-                        }
-                        if (pad_f_bool == true) {
-                          _stop_f();
-                        }
-                        if (pad_g_bool == true) {
-                          _stop_g();
-                        }
-                        if (pad_gb_bool == true) {
-                          _stop_gb();
-                        }
-                        if (pad_a_bool == true) {
-                          _stop_a();
-                        }
-                        if (pad_bb_bool == true) {
-                          _stop_bb();
-                        }
-                        if (pad_b_bool == true) {
-                          _stop_b();
-                        }
-                      } else {
-                        _stop_ab();
-                      }
-                    },
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(bottom: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ElevatedButton(
-                    child: Center(
-                      child: Text(
-                        "A",
-                        style: TextStyle(
-                          fontSize: 28,
-                          color: pad_a_bool == true ? Colors.red : Colors.white,
-                        ),
-                      ),
-                    ),
-                    style: ButtonStyle(
-                      fixedSize: MaterialStateProperty.all<Size>(Size(90, 90)),
-
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(
-                                  color: pad_a_bool == true
-                                      ? Colors.red
-                                      : Colors.white))),
-                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
-                          if (pad_a_bool == true) {
-                            return Colors.transparent;
-                          } else {
-                            // Return another color if the condition is false
-                            return Colors
-                                .transparent; // Or any other color you prefer
-                          }
-                        },
-                      ),
-                      elevation:
-                          MaterialStateProperty.all(0), // Set elevation to 0
-                      overlayColor: MaterialStateProperty.all(
-                          Colors.transparent), // Remove overlay color
-                      // Add other properties as needed
-                    ),
-                    onPressed: () {
-                      if (pad_a_bool == false) {
-                        _play_a();
-                        if (pad_c_bool == true) {
-                          _stop_c();
-                        }
-                        if (pad_c_sustenido_bool == true) {
-                          _stop_c_sustenido();
-                        }
-                        if (pad_d_bool == true) {
-                          _stop_d();
-                        }
-                        if (pad_eb_bool == true) {
-                          _stop_eb();
-                        }
-                        if (pad_e_bool == true) {
-                          _stop_e();
-                        }
-                        if (pad_f_bool == true) {
-                          _stop_f();
-                        }
-                        if (pad_gb_bool == true) {
-                          _stop_gb();
-                        }
-                        if (pad_g_bool == true) {
-                          _stop_g();
-                        }
-                        if (pad_ab_bool == true) {
-                          _stop_ab();
-                        }
-                        if (pad_bb_bool == true) {
-                          _stop_bb();
-                        }
-                        if (pad_b_bool == true) {
-                          _stop_b();
-                        }
-                      } else {
-                        _stop_a();
-                      }
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Center(
-                      child: Text(
-                        "Bb",
-                        style: TextStyle(
-                          fontSize: 28,
-                          color:
-                              pad_bb_bool == true ? Colors.red : Colors.white,
-                        ),
-                      ),
-                    ),
-                    style: ButtonStyle(
-                      fixedSize: MaterialStateProperty.all<Size>(Size(90, 90)),
-
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(
-                                  color: pad_bb_bool == true
-                                      ? Colors.red
-                                      : Colors.white))),
-                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
-                          if (pad_bb_bool == true) {
-                            return Colors.transparent;
-                          } else {
-                            // Return another color if the condition is false
-                            return Colors
-                                .transparent; // Or any other color you prefer
-                          }
-                        },
-                      ),
-                      elevation:
-                          MaterialStateProperty.all(0), // Set elevation to 0
-                      overlayColor: MaterialStateProperty.all(
-                          Colors.transparent), // Remove overlay color
-                      // Add other properties as needed
-                    ),
-                    onPressed: () {
-                      if (pad_bb_bool == false) {
-                        _play_bb();
-                        if (pad_c_bool == true) {
-                          _stop_c();
-                        }
-                        if (pad_c_sustenido_bool == true) {
-                          _stop_c_sustenido();
-                        }
-                        if (pad_d_bool == true) {
-                          _stop_d();
-                        }
-                        if (pad_eb_bool == true) {
-                          _stop_eb();
-                        }
-                        if (pad_e_bool == true) {
-                          _stop_e();
-                        }
-                        if (pad_f_bool == true) {
-                          _stop_f();
-                        }
-                        if (pad_gb_bool == true) {
-                          _stop_gb();
-                        }
-                        if (pad_g_bool == true) {
-                          _stop_g();
-                        }
-                        if (pad_ab_bool == true) {
-                          _stop_ab();
-                        }
-                        if (pad_a_bool == true) {
-                          _stop_a();
-                        }
-                        if (pad_b_bool == true) {
-                          _stop_b();
-                        }
-                      } else {
-                        _stop_bb();
-                      }
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Center(
-                      child: Text(
-                        "B",
-                        style: TextStyle(
-                          fontSize: 28,
-                          color: pad_b_bool == true ? Colors.red : Colors.white,
-                        ),
-                      ),
-                    ),
-                    style: ButtonStyle(
-                      fixedSize: MaterialStateProperty.all<Size>(Size(90, 90)),
-
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(
-                                  color: pad_b_bool == true
-                                      ? Colors.red
-                                      : Colors.white))),
-                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
-                          if (pad_b_bool == true) {
-                            return Colors.transparent;
-                          } else {
-                            // Return another color if the condition is false
-                            return Colors
-                                .transparent; // Or any other color you prefer
-                          }
-                        },
-                      ),
-                      elevation:
-                          MaterialStateProperty.all(0), // Set elevation to 0
-                      overlayColor: MaterialStateProperty.all(
-                          Colors.transparent), // Remove overlay color
-                      // Add other properties as needed
-                    ),
-                    onPressed: () {
-                      if (pad_b_bool == false) {
-                        _play_b();
-                        if (pad_c_bool == true) {
-                          _stop_c();
-                        }
-                        if (pad_c_sustenido_bool == true) {
-                          _stop_c_sustenido();
-                        }
-                        if (pad_d_bool == true) {
-                          _stop_d();
-                        }
-                        if (pad_eb_bool == true) {
-                          _stop_eb();
-                        }
-                        if (pad_e_bool == true) {
-                          _stop_e();
-                        }
-                        if (pad_f_bool == true) {
-                          _stop_f();
-                        }
-                        if (pad_gb_bool == true) {
-                          _stop_gb();
-                        }
-                        if (pad_g_bool == true) {
-                          _stop_g();
-                        }
-                        if (pad_ab_bool == true) {
-                          _stop_ab();
-                        }
-                        if (pad_a_bool == true) {
-                          _stop_a();
-                        }
-                        if (pad_bb_bool == true) {
-                          _stop_bb();
                           if (pad_gb_bool == true) {
                             _stop_gb();
                           }
+                          if (pad_g_bool == true) {
+                            _stop_g();
+                          }
+                          if (pad_ab_bool == true) {
+                            _stop_ab();
+                          }
+                          if (pad_a_bool == true) {
+                            _stop_a();
+                          }
+                          if (pad_bb_bool == true) {
+                            _stop_bb();
+                          }
+                          if (pad_b_bool == true) {
+                            _stop_b();
+                          }
+                        } else {
+                          _stop_c();
                         }
-                      } else {
-                        _stop_b();
-                      }
-                    },
-                  ),
-                ],
-              ),
-            ),
-            ElevatedButton(
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: BorderSide(color: Colors.white))),
-                  backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                    (Set<MaterialState> states) {
-                      return Colors.transparent;
-                    },
-                  ),
-                ),
-                onPressed: () {
-                  setState(() {
-                    pad_d_bool = false;
-                    pad_c_bool = false;
-                    pad_c_sustenido_bool = false;
-                  });
-                  for (double i = 1; i >= 0; i = i - 0.0001) {
-                    pad_c.setVolume(i);
-                    pad_c_sustenido.setVolume(i);
-                    pad_d.setVolume(i);
+                      },
+                    ),
+                    ElevatedButton(
+                      child: Center(
+                        child: Text(
+                          "C#",
+                          style: TextStyle(
+                            fontSize: 28,
+                            color: pad_c_sustenido_bool == true
+                                ? Colors.red
+                                : Colors.white,
+                          ),
+                        ),
+                      ),
+                      style: ButtonStyle(
+                        fixedSize:
+                            MaterialStateProperty.all<Size>(Size(90, 90)),
 
-                    // print(i);
-                  }
-                  pad_c.stop();
-                  pad_c_sustenido.stop();
-                  pad_d.stop();
-                },
-                child: Text(
-                  "END",
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.white,
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: BorderSide(
+                                        color: pad_c_sustenido_bool == true
+                                            ? Colors.red
+                                            : Colors.white))),
+                        backgroundColor:
+                            MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) {
+                            if (pad_c_sustenido_bool == true) {
+                              return Colors.transparent;
+                            } else {
+                              // Return another color if the condition is false
+                              return Colors
+                                  .transparent; // Or any other color you prefer
+                            }
+                          },
+                        ),
+                        elevation:
+                            MaterialStateProperty.all(0), // Set elevation to 0
+                        overlayColor: MaterialStateProperty.all(
+                            Colors.transparent), // Remove overlay color
+                        // Add other properties as needed
+                      ),
+                      onPressed: () {
+                        if (pad_c_sustenido_bool == false) {
+                          _play_c_sustenido();
+                          if (pad_c_bool == true) {
+                            _stop_c();
+                          }
+                          if (pad_d_bool == true) {
+                            _stop_d();
+                          }
+                          if (pad_eb_bool == true) {
+                            _stop_eb();
+                          }
+                          if (pad_e_bool == true) {
+                            _stop_e();
+                          }
+                          if (pad_f_bool == true) {
+                            _stop_f();
+                          }
+                          if (pad_gb_bool == true) {
+                            _stop_gb();
+                          }
+                          if (pad_g_bool == true) {
+                            _stop_g();
+                          }
+                          if (pad_ab_bool == true) {
+                            _stop_ab();
+                          }
+                          if (pad_a_bool == true) {
+                            _stop_a();
+                          }
+                          if (pad_bb_bool == true) {
+                            _stop_bb();
+                          }
+                          if (pad_b_bool == true) {
+                            _stop_b();
+                          }
+                        } else {
+                          _stop_c_sustenido();
+                        }
+                      },
+                    ),
+                    ElevatedButton(
+                      child: Center(
+                        child: Text(
+                          "D",
+                          style: TextStyle(
+                            fontSize: 28,
+                            color:
+                                pad_d_bool == true ? Colors.red : Colors.white,
+                          ),
+                        ),
+                      ),
+                      style: ButtonStyle(
+                        splashFactory: NoSplash.splashFactory,
+                        fixedSize:
+                            MaterialStateProperty.all<Size>(Size(90, 90)),
+
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: BorderSide(
+                                        color: pad_d_bool == true
+                                            ? Colors.red
+                                            : Colors.white))),
+                        backgroundColor:
+                            MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) {
+                            if (pad_d_bool == true) {
+                              return Colors.transparent;
+                            } else {
+                              // Return another color if the condition is false
+                              return Colors
+                                  .transparent; // Or any other color you prefer
+                            }
+                          },
+                        ),
+                        elevation:
+                            MaterialStateProperty.all(0), // Set elevation to 0
+                        overlayColor: MaterialStateProperty.all(
+                            Colors.transparent), // Remove overlay color
+                        // Add other properties as needed
+                      ),
+                      onPressed: () {
+                        if (pad_d_bool == false) {
+                          _play_d();
+                          if (pad_c_bool == true) {
+                            _stop_c();
+                          }
+                          if (pad_c_sustenido_bool == true) {
+                            _stop_c_sustenido();
+                          }
+                          if (pad_eb_bool == true) {
+                            _stop_eb();
+                          }
+                          if (pad_e_bool == true) {
+                            _stop_e();
+                          }
+                          if (pad_f_bool == true) {
+                            _stop_f();
+                          }
+                          if (pad_gb_bool == true) {
+                            _stop_gb();
+                          }
+                          if (pad_g_bool == true) {
+                            _stop_g();
+                          }
+                          if (pad_ab_bool == true) {
+                            _stop_ab();
+                          }
+                          if (pad_a_bool == true) {
+                            _stop_a();
+                          }
+                          if (pad_bb_bool == true) {
+                            _stop_bb();
+                          }
+                          if (pad_b_bool == true) {
+                            _stop_b();
+                          }
+                        } else {
+                          _stop_d();
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(bottom: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                      child: Center(
+                        child: Text(
+                          "Eb",
+                          style: TextStyle(
+                            fontSize: 28,
+                            color:
+                                pad_eb_bool == true ? Colors.red : Colors.white,
+                          ),
+                        ),
+                      ),
+                      style: ButtonStyle(
+                        fixedSize:
+                            MaterialStateProperty.all<Size>(Size(90, 90)),
+
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: BorderSide(
+                                        color: pad_eb_bool == true
+                                            ? Colors.red
+                                            : Colors.white))),
+                        backgroundColor:
+                            MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) {
+                            if (pad_eb_bool == true) {
+                              return Colors.transparent;
+                            } else {
+                              // Return another color if the condition is false
+                              return Colors
+                                  .transparent; // Or any other color you prefer
+                            }
+                          },
+                        ),
+                        elevation:
+                            MaterialStateProperty.all(0), // Set elevation to 0
+                        overlayColor: MaterialStateProperty.all(
+                            Colors.transparent), // Remove overlay color
+                        // Add other properties as needed
+                      ),
+                      onPressed: () {
+                        if (pad_eb_bool == false) {
+                          _play_eb();
+                          if (pad_c_bool == true) {
+                            _stop_c();
+                          }
+                          if (pad_c_sustenido_bool == true) {
+                            _stop_c_sustenido();
+                          }
+                          if (pad_d_bool == true) {
+                            _stop_d();
+                          }
+                          if (pad_e_bool == true) {
+                            _stop_e();
+                          }
+                          if (pad_f_bool == true) {
+                            _stop_f();
+                          }
+                          if (pad_gb_bool == true) {
+                            _stop_gb();
+                          }
+                          if (pad_g_bool == true) {
+                            _stop_g();
+                          }
+                          if (pad_ab_bool == true) {
+                            _stop_ab();
+                          }
+                          if (pad_a_bool == true) {
+                            _stop_a();
+                          }
+                          if (pad_bb_bool == true) {
+                            _stop_bb();
+                          }
+                          if (pad_b_bool == true) {
+                            _stop_b();
+                          }
+                        } else {
+                          _stop_eb();
+                        }
+                      },
+                    ),
+                    ElevatedButton(
+                      child: Center(
+                        child: Text(
+                          "E",
+                          style: TextStyle(
+                            fontSize: 28,
+                            color:
+                                pad_e_bool == true ? Colors.red : Colors.white,
+                          ),
+                        ),
+                      ),
+                      style: ButtonStyle(
+                        fixedSize:
+                            MaterialStateProperty.all<Size>(Size(90, 90)),
+
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: BorderSide(
+                                        color: pad_e_bool == true
+                                            ? Colors.red
+                                            : Colors.white))),
+                        backgroundColor:
+                            MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) {
+                            if (pad_e_bool == true) {
+                              return Colors.transparent;
+                            } else {
+                              // Return another color if the condition is false
+                              return Colors
+                                  .transparent; // Or any other color you prefer
+                            }
+                          },
+                        ),
+                        elevation:
+                            MaterialStateProperty.all(0), // Set elevation to 0
+                        overlayColor: MaterialStateProperty.all(
+                            Colors.transparent), // Remove overlay color
+                        // Add other properties as needed
+                      ),
+                      onPressed: () {
+                        if (pad_e_bool == false) {
+                          _play_e();
+                          if (pad_c_bool == true) {
+                            _stop_c();
+                          }
+                          if (pad_c_sustenido_bool == true) {
+                            _stop_c_sustenido();
+                          }
+                          if (pad_d_bool == true) {
+                            _stop_d();
+                          }
+                          if (pad_eb_bool == true) {
+                            _stop_eb();
+                          }
+                          if (pad_f_bool == true) {
+                            _stop_f();
+                          }
+                          if (pad_gb_bool == true) {
+                            _stop_gb();
+                          }
+                          if (pad_g_bool == true) {
+                            _stop_g();
+                          }
+                          if (pad_ab_bool == true) {
+                            _stop_ab();
+                          }
+                          if (pad_a_bool == true) {
+                            _stop_a();
+                          }
+                          if (pad_bb_bool == true) {
+                            _stop_bb();
+                          }
+                          if (pad_b_bool == true) {
+                            _stop_b();
+                          }
+                        } else {
+                          _stop_e();
+                        }
+                      },
+                    ),
+                    ElevatedButton(
+                      child: Center(
+                        child: Text(
+                          "F",
+                          style: TextStyle(
+                            fontSize: 28,
+                            color:
+                                pad_f_bool == true ? Colors.red : Colors.white,
+                          ),
+                        ),
+                      ),
+                      style: ButtonStyle(
+                        fixedSize:
+                            MaterialStateProperty.all<Size>(Size(90, 90)),
+
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: BorderSide(
+                                        color: pad_f_bool == true
+                                            ? Colors.red
+                                            : Colors.white))),
+                        backgroundColor:
+                            MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) {
+                            if (pad_f_bool == true) {
+                              return Colors.transparent;
+                            } else {
+                              // Return another color if the condition is false
+                              return Colors
+                                  .transparent; // Or any other color you prefer
+                            }
+                          },
+                        ),
+                        elevation:
+                            MaterialStateProperty.all(0), // Set elevation to 0
+                        overlayColor: MaterialStateProperty.all(
+                            Colors.transparent), // Remove overlay color
+                        // Add other properties as needed
+                      ),
+                      onPressed: () {
+                        if (pad_f_bool == false) {
+                          _play_f();
+                          if (pad_c_bool == true) {
+                            _stop_c();
+                          }
+                          if (pad_c_sustenido_bool == true) {
+                            _stop_c_sustenido();
+                          }
+                          if (pad_d_bool == true) {
+                            _stop_d();
+                          }
+                          if (pad_eb_bool == true) {
+                            _stop_eb();
+                          }
+                          if (pad_e_bool == true) {
+                            _stop_e();
+                          }
+                          if (pad_gb_bool == true) {
+                            _stop_gb();
+                          }
+                          if (pad_g_bool == true) {
+                            _stop_g();
+                          }
+                          if (pad_ab_bool == true) {
+                            _stop_ab();
+                          }
+                          if (pad_a_bool == true) {
+                            _stop_a();
+                          }
+                          if (pad_bb_bool == true) {
+                            _stop_bb();
+                          }
+                          if (pad_b_bool == true) {
+                            _stop_b();
+                          }
+                        } else {
+                          _stop_f();
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(bottom: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                      child: Center(
+                        child: Text(
+                          "Gb",
+                          style: TextStyle(
+                            fontSize: 28,
+                            color:
+                                pad_gb_bool == true ? Colors.red : Colors.white,
+                          ),
+                        ),
+                      ),
+                      style: ButtonStyle(
+                        fixedSize:
+                            MaterialStateProperty.all<Size>(Size(90, 90)),
+
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: BorderSide(
+                                        color: pad_gb_bool == true
+                                            ? Colors.red
+                                            : Colors.white))),
+                        backgroundColor:
+                            MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) {
+                            if (pad_gb_bool == true) {
+                              return Colors.transparent;
+                            } else {
+                              // Return another color if the condition is false
+                              return Colors
+                                  .transparent; // Or any other color you prefer
+                            }
+                          },
+                        ),
+                        elevation:
+                            MaterialStateProperty.all(0), // Set elevation to 0
+                        overlayColor: MaterialStateProperty.all(
+                            Colors.transparent), // Remove overlay color
+                        // Add other properties as needed
+                      ),
+                      onPressed: () {
+                        if (pad_gb_bool == false) {
+                          _play_gb();
+                          if (pad_c_bool == true) {
+                            _stop_c();
+                          }
+                          if (pad_c_sustenido_bool == true) {
+                            _stop_c_sustenido();
+                          }
+                          if (pad_d_bool == true) {
+                            _stop_d();
+                          }
+                          if (pad_eb_bool == true) {
+                            _stop_eb();
+                          }
+                          if (pad_e_bool == true) {
+                            _stop_e();
+                          }
+                          if (pad_f_bool == true) {
+                            _stop_f();
+                          }
+                          if (pad_g_bool == true) {
+                            _stop_g();
+                          }
+                          if (pad_ab_bool == true) {
+                            _stop_ab();
+                          }
+                          if (pad_a_bool == true) {
+                            _stop_a();
+                          }
+                          if (pad_bb_bool == true) {
+                            _stop_bb();
+                          }
+                          if (pad_b_bool == true) {
+                            _stop_b();
+                          }
+                        } else {
+                          _stop_gb();
+                        }
+                      },
+                    ),
+                    ElevatedButton(
+                      child: Center(
+                        child: Text(
+                          "G",
+                          style: TextStyle(
+                            fontSize: 28,
+                            color:
+                                pad_g_bool == true ? Colors.red : Colors.white,
+                          ),
+                        ),
+                      ),
+                      style: ButtonStyle(
+                        fixedSize:
+                            MaterialStateProperty.all<Size>(Size(90, 90)),
+
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: BorderSide(
+                                        color: pad_g_bool == true
+                                            ? Colors.red
+                                            : Colors.white))),
+                        backgroundColor:
+                            MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) {
+                            if (pad_g_bool == true) {
+                              return Colors.transparent;
+                            } else {
+                              // Return another color if the condition is false
+                              return Colors
+                                  .transparent; // Or any other color you prefer
+                            }
+                          },
+                        ),
+                        elevation:
+                            MaterialStateProperty.all(0), // Set elevation to 0
+                        overlayColor: MaterialStateProperty.all(
+                            Colors.transparent), // Remove overlay color
+                        // Add other properties as needed
+                      ),
+                      onPressed: () {
+                        if (pad_g_bool == false) {
+                          _play_g();
+                          if (pad_c_bool == true) {
+                            _stop_c();
+                          }
+                          if (pad_c_sustenido_bool == true) {
+                            _stop_c_sustenido();
+                          }
+                          if (pad_d_bool == true) {
+                            _stop_d();
+                          }
+                          if (pad_eb_bool == true) {
+                            _stop_eb();
+                          }
+                          if (pad_e_bool == true) {
+                            _stop_e();
+                          }
+                          if (pad_f_bool == true) {
+                            _stop_f();
+                          }
+                          if (pad_gb_bool == true) {
+                            _stop_gb();
+                          }
+                          if (pad_ab_bool == true) {
+                            _stop_ab();
+                          }
+                          if (pad_a_bool == true) {
+                            _stop_a();
+                          }
+                          if (pad_bb_bool == true) {
+                            _stop_bb();
+                          }
+                          if (pad_b_bool == true) {
+                            _stop_b();
+                          }
+                        } else {
+                          _stop_g();
+                        }
+                      },
+                    ),
+                    ElevatedButton(
+                      child: Center(
+                        child: Text(
+                          "Ab",
+                          style: TextStyle(
+                            fontSize: 28,
+                            color:
+                                pad_ab_bool == true ? Colors.red : Colors.white,
+                          ),
+                        ),
+                      ),
+                      style: ButtonStyle(
+                        fixedSize:
+                            MaterialStateProperty.all<Size>(Size(90, 90)),
+
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: BorderSide(
+                                        color: pad_ab_bool == true
+                                            ? Colors.red
+                                            : Colors.white))),
+                        backgroundColor:
+                            MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) {
+                            if (pad_ab_bool == true) {
+                              return Colors.transparent;
+                            } else {
+                              // Return another color if the condition is false
+                              return Colors
+                                  .transparent; // Or any other color you prefer
+                            }
+                          },
+                        ),
+                        elevation:
+                            MaterialStateProperty.all(0), // Set elevation to 0
+                        overlayColor: MaterialStateProperty.all(
+                            Colors.transparent), // Remove overlay color
+                        // Add other properties as needed
+                      ),
+                      onPressed: () {
+                        if (pad_ab_bool == false) {
+                          _play_ab();
+                          if (pad_c_bool == true) {
+                            _stop_c();
+                          }
+                          if (pad_c_sustenido_bool == true) {
+                            _stop_c_sustenido();
+                          }
+                          if (pad_d_bool == true) {
+                            _stop_d();
+                          }
+                          if (pad_eb_bool == true) {
+                            _stop_eb();
+                          }
+                          if (pad_e_bool == true) {
+                            _stop_e();
+                          }
+                          if (pad_f_bool == true) {
+                            _stop_f();
+                          }
+                          if (pad_g_bool == true) {
+                            _stop_g();
+                          }
+                          if (pad_gb_bool == true) {
+                            _stop_gb();
+                          }
+                          if (pad_a_bool == true) {
+                            _stop_a();
+                          }
+                          if (pad_bb_bool == true) {
+                            _stop_bb();
+                          }
+                          if (pad_b_bool == true) {
+                            _stop_b();
+                          }
+                        } else {
+                          _stop_ab();
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(bottom: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                      child: Center(
+                        child: Text(
+                          "A",
+                          style: TextStyle(
+                            fontSize: 28,
+                            color:
+                                pad_a_bool == true ? Colors.red : Colors.white,
+                          ),
+                        ),
+                      ),
+                      style: ButtonStyle(
+                        fixedSize:
+                            MaterialStateProperty.all<Size>(Size(90, 90)),
+
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: BorderSide(
+                                        color: pad_a_bool == true
+                                            ? Colors.red
+                                            : Colors.white))),
+                        backgroundColor:
+                            MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) {
+                            if (pad_a_bool == true) {
+                              return Colors.transparent;
+                            } else {
+                              // Return another color if the condition is false
+                              return Colors
+                                  .transparent; // Or any other color you prefer
+                            }
+                          },
+                        ),
+                        elevation:
+                            MaterialStateProperty.all(0), // Set elevation to 0
+                        overlayColor: MaterialStateProperty.all(
+                            Colors.transparent), // Remove overlay color
+                        // Add other properties as needed
+                      ),
+                      onPressed: () {
+                        if (pad_a_bool == false) {
+                          _play_a();
+                          if (pad_c_bool == true) {
+                            _stop_c();
+                          }
+                          if (pad_c_sustenido_bool == true) {
+                            _stop_c_sustenido();
+                          }
+                          if (pad_d_bool == true) {
+                            _stop_d();
+                          }
+                          if (pad_eb_bool == true) {
+                            _stop_eb();
+                          }
+                          if (pad_e_bool == true) {
+                            _stop_e();
+                          }
+                          if (pad_f_bool == true) {
+                            _stop_f();
+                          }
+                          if (pad_gb_bool == true) {
+                            _stop_gb();
+                          }
+                          if (pad_g_bool == true) {
+                            _stop_g();
+                          }
+                          if (pad_ab_bool == true) {
+                            _stop_ab();
+                          }
+                          if (pad_bb_bool == true) {
+                            _stop_bb();
+                          }
+                          if (pad_b_bool == true) {
+                            _stop_b();
+                          }
+                        } else {
+                          _stop_a();
+                        }
+                      },
+                    ),
+                    ElevatedButton(
+                      child: Center(
+                        child: Text(
+                          "Bb",
+                          style: TextStyle(
+                            fontSize: 28,
+                            color:
+                                pad_bb_bool == true ? Colors.red : Colors.white,
+                          ),
+                        ),
+                      ),
+                      style: ButtonStyle(
+                        fixedSize:
+                            MaterialStateProperty.all<Size>(Size(90, 90)),
+
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: BorderSide(
+                                        color: pad_bb_bool == true
+                                            ? Colors.red
+                                            : Colors.white))),
+                        backgroundColor:
+                            MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) {
+                            if (pad_bb_bool == true) {
+                              return Colors.transparent;
+                            } else {
+                              // Return another color if the condition is false
+                              return Colors
+                                  .transparent; // Or any other color you prefer
+                            }
+                          },
+                        ),
+                        elevation:
+                            MaterialStateProperty.all(0), // Set elevation to 0
+                        overlayColor: MaterialStateProperty.all(
+                            Colors.transparent), // Remove overlay color
+                        // Add other properties as needed
+                      ),
+                      onPressed: () {
+                        if (pad_bb_bool == false) {
+                          _play_bb();
+                          if (pad_c_bool == true) {
+                            _stop_c();
+                          }
+                          if (pad_c_sustenido_bool == true) {
+                            _stop_c_sustenido();
+                          }
+                          if (pad_d_bool == true) {
+                            _stop_d();
+                          }
+                          if (pad_eb_bool == true) {
+                            _stop_eb();
+                          }
+                          if (pad_e_bool == true) {
+                            _stop_e();
+                          }
+                          if (pad_f_bool == true) {
+                            _stop_f();
+                          }
+                          if (pad_gb_bool == true) {
+                            _stop_gb();
+                          }
+                          if (pad_g_bool == true) {
+                            _stop_g();
+                          }
+                          if (pad_ab_bool == true) {
+                            _stop_ab();
+                          }
+                          if (pad_a_bool == true) {
+                            _stop_a();
+                          }
+                          if (pad_b_bool == true) {
+                            _stop_b();
+                          }
+                        } else {
+                          _stop_bb();
+                        }
+                      },
+                    ),
+                    ElevatedButton(
+                      child: Center(
+                        child: Text(
+                          "B",
+                          style: TextStyle(
+                            fontSize: 28,
+                            color:
+                                pad_b_bool == true ? Colors.red : Colors.white,
+                          ),
+                        ),
+                      ),
+                      style: ButtonStyle(
+                        fixedSize:
+                            MaterialStateProperty.all<Size>(Size(90, 90)),
+
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: BorderSide(
+                                        color: pad_b_bool == true
+                                            ? Colors.red
+                                            : Colors.white))),
+                        backgroundColor:
+                            MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) {
+                            if (pad_b_bool == true) {
+                              return Colors.transparent;
+                            } else {
+                              // Return another color if the condition is false
+                              return Colors
+                                  .transparent; // Or any other color you prefer
+                            }
+                          },
+                        ),
+                        elevation:
+                            MaterialStateProperty.all(0), // Set elevation to 0
+                        overlayColor: MaterialStateProperty.all(
+                            Colors.transparent), // Remove overlay color
+                        // Add other properties as needed
+                      ),
+                      onPressed: () {
+                        if (pad_b_bool == false) {
+                          _play_b();
+                          if (pad_c_bool == true) {
+                            _stop_c();
+                          }
+                          if (pad_c_sustenido_bool == true) {
+                            _stop_c_sustenido();
+                          }
+                          if (pad_d_bool == true) {
+                            _stop_d();
+                          }
+                          if (pad_eb_bool == true) {
+                            _stop_eb();
+                          }
+                          if (pad_e_bool == true) {
+                            _stop_e();
+                          }
+                          if (pad_f_bool == true) {
+                            _stop_f();
+                          }
+                          if (pad_gb_bool == true) {
+                            _stop_gb();
+                          }
+                          if (pad_g_bool == true) {
+                            _stop_g();
+                          }
+                          if (pad_ab_bool == true) {
+                            _stop_ab();
+                          }
+                          if (pad_a_bool == true) {
+                            _stop_a();
+                          }
+                          if (pad_bb_bool == true) {
+                            _stop_bb();
+                            if (pad_gb_bool == true) {
+                              _stop_gb();
+                            }
+                          }
+                        } else {
+                          _stop_b();
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              ElevatedButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(color: Colors.white))),
+                    backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                      (Set<MaterialState> states) {
+                        return Colors.transparent;
+                      },
+                    ),
                   ),
-                )),
-          ],
+                  onPressed: () {
+                    setState(() {
+                      pad_d_bool = false;
+                      pad_c_bool = false;
+                      pad_c_sustenido_bool = false;
+                    });
+                    for (double i = 1; i >= 0; i = i - 0.0001) {
+                      pad_c.setVolume(i);
+                      pad_c_sustenido.setVolume(i);
+                      pad_d.setVolume(i);
+
+                      // print(i);
+                    }
+                    pad_c.stop();
+                    pad_c_sustenido.stop();
+                    pad_d.stop();
+                  },
+                  child: Text(
+                    "END",
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.white,
+                    ),
+                  )),
+            ],
+          ),
         ),
       ),
     );
