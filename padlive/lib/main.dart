@@ -80,23 +80,83 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
-  Future<void> _playing(AudioPlayer audioplayer) async {
-    for (double i = 0; i <= 1; i += 0.1) {
+  Future<void> _playing_c(AudioPlayer audioplayer) async {
+    for (double i = audioplayer.volume; i <= 1; i += 0.1) {
       await Future.delayed(const Duration(milliseconds: 500), () {
         setState(() {
           audioplayer.setVolume((i));
         });
         print(audioplayer.volume);
       });
+      if (pad_c_bool == false) {
+        break;
+      }
     }
   }
 
-  Future<void> _stoping(AudioPlayer audioplayer) async {
-    for (double i = 1; i >= 0; i -= 0.1) {
+  Future<void> _stoping_c(AudioPlayer audioplayer) async {
+    for (double i = audioplayer.volume; i >= 0; i -= 0.1) {
       await Future.delayed(const Duration(milliseconds: 500), () {
         setState(() {
           audioplayer.setVolume((i));
         });
+        print("Parando C");
+        print(audioplayer.volume);
+      });
+    }
+
+    audioplayer.stop();
+  }
+
+  Future<void> _playing_c_sus(AudioPlayer audioplayer) async {
+    for (double i = audioplayer.volume; i <= 1; i += 0.1) {
+      await Future.delayed(const Duration(milliseconds: 500), () {
+        setState(() {
+          audioplayer.setVolume((i));
+        });
+        print(audioplayer.volume);
+      });
+      if (pad_c_sustenido_bool == false) {
+        break;
+      }
+    }
+  }
+
+  Future<void> _stoping_c_sus(AudioPlayer audioplayer) async {
+    for (double i = audioplayer.volume; i >= 0; i -= 0.1) {
+      await Future.delayed(const Duration(milliseconds: 500), () {
+        setState(() {
+          audioplayer.setVolume((i));
+        });
+        print("Parando C sustenido");
+        print(audioplayer.volume);
+      });
+    }
+
+    audioplayer.stop();
+  }
+
+  Future<void> _playing_d(AudioPlayer audioplayer) async {
+    for (double i = audioplayer.volume; i <= 1; i += 0.1) {
+      await Future.delayed(const Duration(milliseconds: 500), () {
+        setState(() {
+          audioplayer.setVolume((i));
+        });
+        print(audioplayer.volume);
+      });
+      if (pad_d_bool == false) {
+        break;
+      }
+    }
+  }
+
+  Future<void> _stoping_d(AudioPlayer audioplayer) async {
+    for (double i = audioplayer.volume; i >= 0; i -= 0.1) {
+      await Future.delayed(const Duration(milliseconds: 500), () {
+        setState(() {
+          audioplayer.setVolume((i));
+        });
+        print("Parando D");
         print(audioplayer.volume);
       });
     }
@@ -110,7 +170,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
     pad_c.setVolume(0);
     pad_c.play(AssetSource('foundations/c.mp3'));
-    _playing(pad_c);
+    _playing_c(pad_c);
 
     print("Playing C");
   }
@@ -119,7 +179,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       pad_c_bool = !pad_c_bool;
     });
-    _stoping(pad_c);
+    _stoping_c(pad_c);
 
     print("Stoping C");
   }
@@ -130,14 +190,14 @@ class _MyHomePageState extends State<MyHomePage> {
     });
     pad_c_sustenido.setVolume(0);
     pad_c_sustenido.play(AssetSource('foundations/c#.mp3'));
-    _playing(pad_c_sustenido);
+    _playing_c_sus(pad_c_sustenido);
   }
 
   void _stop_c_sustenido() {
     setState(() {
       pad_c_sustenido_bool = !pad_c_sustenido_bool;
     });
-    _stoping(pad_c_sustenido);
+    _stoping_c_sus(pad_c_sustenido);
 
     print("Stoping C#");
   }
@@ -148,16 +208,16 @@ class _MyHomePageState extends State<MyHomePage> {
     });
     pad_d.setVolume(0);
     pad_d.play(AssetSource('foundations/d.mp3'));
-    _playing(pad_d);
+    _playing_d(pad_d);
 
-    print("Playing C");
+    print("Playing D");
   }
 
   void _stop_d() {
     setState(() {
       pad_d_bool = !pad_d_bool;
     });
-    _stoping(pad_d);
+    _stoping_d(pad_d);
     print("Stoping D");
   }
 
@@ -1359,9 +1419,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       pad_c_bool = false;
                       pad_c_sustenido_bool = false;
                     });
-                    _stoping(pad_c);
-                    _stoping(pad_c_sustenido);
-                    _stoping(pad_d);
+                    _stoping_c(pad_c);
+                    _stoping_c(pad_c_sustenido);
+                    _stoping_d(pad_d);
                   },
                   child: Text(
                     "END",
