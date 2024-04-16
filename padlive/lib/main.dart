@@ -86,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
         setState(() {
           audioplayer.setVolume((i));
         });
-        print(audioplayer.volume);
+        print("Aumentando C Pad ${audioplayer.volume}");
       });
       if (pad_c_bool == false) {
         break;
@@ -100,11 +100,10 @@ class _MyHomePageState extends State<MyHomePage> {
         setState(() {
           audioplayer.setVolume((i));
         });
-        print("Parando C");
-        print(audioplayer.volume);
+        print("Diminuindo Pad C ${audioplayer.volume}");
       });
     }
-
+    print("C Parado");
     audioplayer.stop();
   }
 
@@ -142,7 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
         setState(() {
           audioplayer.setVolume((i));
         });
-        print(audioplayer.volume);
+        print("Aumentando D Pad ${audioplayer.volume}");
       });
       if (pad_d_bool == false) {
         break;
@@ -156,8 +155,34 @@ class _MyHomePageState extends State<MyHomePage> {
         setState(() {
           audioplayer.setVolume((i));
         });
-        print("Parando D");
-        print(audioplayer.volume);
+        print("Diminuindo Pad D ${audioplayer.volume}");
+      });
+    }
+
+    audioplayer.stop();
+  }
+
+  Future<void> _playing_d_sus(AudioPlayer audioplayer) async {
+    for (double i = audioplayer.volume; i <= 1; i += 0.1) {
+      await Future.delayed(const Duration(milliseconds: 500), () {
+        setState(() {
+          audioplayer.setVolume((i));
+        });
+        print("Aumentando D Sustenido Pad ${audioplayer.volume}");
+      });
+      if (pad_eb_bool == false) {
+        break;
+      }
+    }
+  }
+
+  Future<void> _stoping_d_sus(AudioPlayer audioplayer) async {
+    for (double i = audioplayer.volume; i >= 0; i -= 0.1) {
+      await Future.delayed(const Duration(milliseconds: 500), () {
+        setState(() {
+          audioplayer.setVolume((i));
+        });
+        print("Diminuindo Pad D Sustenido ${audioplayer.volume}");
       });
     }
 
@@ -222,18 +247,20 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _play_eb() {
-    pad_eb.play(AssetSource('foundations/eb.mp3'));
     setState(() {
-      pad_eb_bool = !pad_eb_bool; // Toggle the value
+      pad_eb_bool = !pad_eb_bool;
     });
-    print("Playing Eb");
+    pad_eb.setVolume(0);
+    pad_eb.play(AssetSource('foundations/eb.mp3'));
+    _playing_d_sus(pad_eb);
   }
 
   void _stop_eb() {
-    pad_eb.stop();
     setState(() {
-      pad_eb_bool = !pad_eb_bool; // Toggle the value
+      pad_eb_bool = !pad_eb_bool;
     });
+    _stoping_d_sus(pad_eb);
+
     print("Stoping Eb");
   }
 
