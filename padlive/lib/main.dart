@@ -38,6 +38,44 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  // Notas naturais
+  final cAudioPlayer = AudioPlayer();
+  bool cAudioPlayer_bool = false;
+
+  final dAudioPlayer = AudioPlayer();
+  bool dAudioPlayer_bool = false;
+
+  final eAudioPlayer = AudioPlayer();
+  bool eAudioPlayer_bool = false;
+
+  final fAudioPlayer = AudioPlayer();
+  bool fAudioPlayer_bool = false;
+
+  final gAudioPlayer = AudioPlayer();
+  bool gAudioPlayer_bool = false;
+
+  final aAudioPlayer = AudioPlayer();
+  bool aAudioPlayer_bool = false;
+
+  final bAudioPlayer = AudioPlayer();
+  bool bAudioPlayer_bool = false;
+
+// Notas sustenidas
+  final cSustenidoAudioPlayer = AudioPlayer();
+  bool cSustenidoAudioPlayer_bool = false;
+
+  final dSustenidoAudioPlayer = AudioPlayer();
+  bool dSustenidoAudioPlayer_bool = false;
+
+  final fSustenidoAudioPlayer = AudioPlayer();
+  bool fSustenidoAudioPlayer_bool = false;
+
+  final gSustenidoAudioPlayer = AudioPlayer();
+  bool gSustenidoAudioPlayer_bool = false;
+
+  final aSustenidoAudioPlayer = AudioPlayer();
+  bool aSustenidoAudioPlayer_bool = false;
+
   final pad_c = AudioPlayer();
   bool pad_c_bool = false;
 
@@ -76,8 +114,210 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void dispose() {
-    pad_c.dispose();
+    // Parar todos os players
+    cAudioPlayer.stop();
+    dAudioPlayer.stop();
+    eAudioPlayer.stop();
+    fAudioPlayer.stop();
+    gAudioPlayer.stop();
+    aAudioPlayer.stop();
+    bAudioPlayer.stop();
+
+    cSustenidoAudioPlayer.stop();
+    dSustenidoAudioPlayer.stop();
+    fSustenidoAudioPlayer.stop();
+    gSustenidoAudioPlayer.stop();
+    aSustenidoAudioPlayer.stop();
+
+    // Liberar recursos dos players
+    cAudioPlayer.dispose();
+    dAudioPlayer.dispose();
+    eAudioPlayer.dispose();
+    fAudioPlayer.dispose();
+    gAudioPlayer.dispose();
+    aAudioPlayer.dispose();
+    bAudioPlayer.dispose();
+
+    cSustenidoAudioPlayer.dispose();
+    dSustenidoAudioPlayer.dispose();
+    fSustenidoAudioPlayer.dispose();
+    gSustenidoAudioPlayer.dispose();
+    aSustenidoAudioPlayer.dispose();
+
+    // Chamar super.dispose uma única vez
     super.dispose();
+  }
+
+  Future<void> _fadeOutCurrentPad(AudioPlayer currentAudioPlayer) async {
+    // Faz fade-out do áudio atual
+    for (double i = currentAudioPlayer.volume; i >= 0; i -= 0.1) {
+      await Future.delayed(const Duration(milliseconds: 200), () {
+        setState(() {
+          currentAudioPlayer.setVolume(i);
+        });
+        print("Diminuindo volume: ${currentAudioPlayer.volume}");
+      });
+    }
+    currentAudioPlayer.stop();
+  }
+
+  Future<void> _fadeInNewPad(AudioPlayer newAudioPlayer) async {
+    // Faz fade-in do novo áudio
+    for (double i = 0; i <= 1; i += 0.1) {
+      await Future.delayed(const Duration(milliseconds: 200), () {
+        setState(() {
+          newAudioPlayer.setVolume(i);
+        });
+        print("Aumentando volume: ${newAudioPlayer.volume}");
+      });
+    }
+  }
+
+  void _playNewPad(AudioPlayer newAudioPlayer, String audioPath) {
+    // Inicia o fade-in do novo áudio
+
+    newAudioPlayer.play(AssetSource(audioPath)); // Toca o áudio
+    _fadeInNewPad(newAudioPlayer); // Aplica o fade-in
+  }
+
+  void _togglePad(String padName, AudioPlayer audioPlayer) {
+    // Verificação das notas naturais e seus booleans
+    if (padName == "C" && cAudioPlayer_bool) {
+      _fadeOutCurrentPad(audioPlayer);
+      cAudioPlayer_bool = false;
+    } else if (padName == "C#" && cSustenidoAudioPlayer_bool) {
+      _fadeOutCurrentPad(audioPlayer);
+      cSustenidoAudioPlayer_bool = false;
+    } else if (padName == "D" && dAudioPlayer_bool) {
+      _fadeOutCurrentPad(audioPlayer);
+      dAudioPlayer_bool = false;
+    } else if (padName == "D#" && dSustenidoAudioPlayer_bool) {
+      _fadeOutCurrentPad(audioPlayer);
+      dSustenidoAudioPlayer_bool = false;
+    } else if (padName == "E" && eAudioPlayer_bool) {
+      _fadeOutCurrentPad(audioPlayer);
+      eAudioPlayer_bool = false;
+    } else if (padName == "F" && fAudioPlayer_bool) {
+      _fadeOutCurrentPad(audioPlayer);
+      fAudioPlayer_bool = false;
+    } else if (padName == "F#" && fSustenidoAudioPlayer_bool) {
+      _fadeOutCurrentPad(audioPlayer);
+      fSustenidoAudioPlayer_bool = false;
+    } else if (padName == "G" && gAudioPlayer_bool) {
+      _fadeOutCurrentPad(audioPlayer);
+      gAudioPlayer_bool = false;
+    } else if (padName == "G#" && gSustenidoAudioPlayer_bool) {
+      _fadeOutCurrentPad(audioPlayer);
+      gSustenidoAudioPlayer_bool = false;
+    } else if (padName == "A" && aAudioPlayer_bool) {
+      _fadeOutCurrentPad(audioPlayer);
+      aAudioPlayer_bool = false;
+    } else if (padName == "A#" && aSustenidoAudioPlayer_bool) {
+      _fadeOutCurrentPad(audioPlayer);
+      aSustenidoAudioPlayer_bool = false;
+    } else if (padName == "B" && bAudioPlayer_bool) {
+      _fadeOutCurrentPad(audioPlayer);
+      bAudioPlayer_bool = false;
+    } else {
+      // Se o pad não está tocando, toca o áudio normalmente com fade-in
+      _handlePadPress(padName, audioPlayer);
+    }
+  }
+
+  void _handlePadPress(String padName, AudioPlayer newAudioPlayer) {
+    String audioPath = "";
+
+    // Verifica qual pad está tocando e para o áudio
+    if (cAudioPlayer_bool) {
+      _fadeOutCurrentPad(cAudioPlayer);
+      cAudioPlayer_bool = false;
+    }
+    if (cSustenidoAudioPlayer_bool) {
+      _fadeOutCurrentPad(cSustenidoAudioPlayer);
+      cSustenidoAudioPlayer_bool = false;
+    }
+    if (dAudioPlayer_bool) {
+      _fadeOutCurrentPad(dAudioPlayer);
+      dAudioPlayer_bool = false;
+    }
+    if (dSustenidoAudioPlayer_bool) {
+      _fadeOutCurrentPad(dSustenidoAudioPlayer);
+      dSustenidoAudioPlayer_bool = false;
+    }
+    if (eAudioPlayer_bool) {
+      _fadeOutCurrentPad(eAudioPlayer);
+      eAudioPlayer_bool = false;
+    }
+    if (fAudioPlayer_bool) {
+      _fadeOutCurrentPad(fAudioPlayer);
+      fAudioPlayer_bool = false;
+    }
+    if (fSustenidoAudioPlayer_bool) {
+      _fadeOutCurrentPad(fSustenidoAudioPlayer);
+      fSustenidoAudioPlayer_bool = false;
+    }
+    if (gAudioPlayer_bool) {
+      _fadeOutCurrentPad(gAudioPlayer);
+      gAudioPlayer_bool = false;
+    }
+    if (gSustenidoAudioPlayer_bool) {
+      _fadeOutCurrentPad(gSustenidoAudioPlayer);
+      gSustenidoAudioPlayer_bool = false;
+    }
+    if (aAudioPlayer_bool) {
+      _fadeOutCurrentPad(aAudioPlayer);
+      aAudioPlayer_bool = false;
+    }
+    if (aSustenidoAudioPlayer_bool) {
+      _fadeOutCurrentPad(aSustenidoAudioPlayer);
+      aSustenidoAudioPlayer_bool = false;
+    }
+    if (bAudioPlayer_bool) {
+      _fadeOutCurrentPad(bAudioPlayer);
+      bAudioPlayer_bool = false;
+    }
+
+    // Define o caminho do áudio correspondente ao pad clicado
+    if (padName == "C") {
+      audioPath = "foundations/c.mp3"; // Caminho do áudio para o pad C
+      cAudioPlayer_bool = true;
+    } else if (padName == "C#") {
+      audioPath = "foundations/c#.mp3"; // Caminho do áudio para o pad C#
+      cSustenidoAudioPlayer_bool = true;
+    } else if (padName == "D") {
+      audioPath = "foundations/d.mp3"; // Caminho do áudio para o pad D
+      dAudioPlayer_bool = true;
+    } else if (padName == "D#") {
+      audioPath = "foundations/d#.mp3"; // Caminho do áudio para o pad D#
+      dSustenidoAudioPlayer_bool = true;
+    } else if (padName == "E") {
+      audioPath = "foundations/e.mp3"; // Caminho do áudio para o pad E
+      eAudioPlayer_bool = true;
+    } else if (padName == "F") {
+      audioPath = "foundations/f.mp3"; // Caminho do áudio para o pad F
+      fAudioPlayer_bool = true;
+    } else if (padName == "F#") {
+      audioPath = "foundations/f#.mp3"; // Caminho do áudio para o pad F#
+      fSustenidoAudioPlayer_bool = true;
+    } else if (padName == "G") {
+      audioPath = "foundations/g.mp3"; // Caminho do áudio para o pad G
+      gAudioPlayer_bool = true;
+    } else if (padName == "G#") {
+      audioPath = "foundations/g#.mp3"; // Caminho do áudio para o pad G#
+      gSustenidoAudioPlayer_bool = true;
+    } else if (padName == "A") {
+      audioPath = "foundations/a.mp3"; // Caminho do áudio para o pad A
+      aAudioPlayer_bool = true;
+    } else if (padName == "A#") {
+      audioPath = "foundations/a#.mp3"; // Caminho do áudio para o pad A#
+      aSustenidoAudioPlayer_bool = true;
+    } else if (padName == "B") {
+      audioPath = "foundations/b.mp3"; // Caminho do áudio para o pad B
+      bAudioPlayer_bool = true;
+    }
+
+    // Toca o novo pad com o áudio correspondente
+    _playNewPad(newAudioPlayer, audioPath);
   }
 
   Future<void> _playing_c(AudioPlayer audioplayer) async {
@@ -417,28 +657,26 @@ class _MyHomePageState extends State<MyHomePage> {
                           "C",
                           style: TextStyle(
                             fontSize: 28,
-                            color:
-                                pad_c_bool == true ? Colors.red : Colors.white,
+                            color: cAudioPlayer_bool == true
+                                ? Colors.red
+                                : Colors.white,
                           ),
                         ),
                       ),
                       style: ButtonStyle(
                         splashFactory: NoSplash.splashFactory,
-                        fixedSize:
-                            MaterialStateProperty.all<Size>(Size(90, 90)),
+                        fixedSize: WidgetStateProperty.all<Size>(Size(90, 90)),
 
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18.0),
-                                    side: BorderSide(
-                                        color: pad_c_bool == true
-                                            ? Colors.red
-                                            : Colors.white))),
-                        backgroundColor:
-                            MaterialStateProperty.resolveWith<Color>(
-                          (Set<MaterialState> states) {
-                            if (pad_c_bool == true) {
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                                side: BorderSide(
+                                    color: cAudioPlayer_bool == true
+                                        ? Colors.red
+                                        : Colors.white))),
+                        backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                          (Set<WidgetState> states) {
+                            if (cAudioPlayer_bool == true) {
                               return Colors.transparent;
                             } else {
                               // Return another color if the condition is false
@@ -448,50 +686,14 @@ class _MyHomePageState extends State<MyHomePage> {
                           },
                         ),
                         elevation:
-                            MaterialStateProperty.all(0), // Set elevation to 0
-                        overlayColor: MaterialStateProperty.all(
+                            WidgetStateProperty.all(0), // Set elevation to 0
+                        overlayColor: WidgetStateProperty.all(
                             Colors.transparent), // Remove overlay color
                         // Add other properties as needed
                       ),
                       onPressed: () {
-                        if (pad_c_bool == false) {
-                          _play_c();
-                          if (pad_c_sustenido_bool == true) {
-                            _stop_c_sustenido();
-                          }
-                          if (pad_d_bool == true) {
-                            _stop_d();
-                          }
-                          if (pad_eb_bool == true) {
-                            _stop_eb();
-                          }
-                          if (pad_e_bool == true) {
-                            _stop_e();
-                          }
-                          if (pad_f_bool == true) {
-                            _stop_f();
-                          }
-                          if (pad_gb_bool == true) {
-                            _stop_gb();
-                          }
-                          if (pad_g_bool == true) {
-                            _stop_g();
-                          }
-                          if (pad_ab_bool == true) {
-                            _stop_ab();
-                          }
-                          if (pad_a_bool == true) {
-                            _stop_a();
-                          }
-                          if (pad_bb_bool == true) {
-                            _stop_bb();
-                          }
-                          if (pad_b_bool == true) {
-                            _stop_b();
-                          }
-                        } else {
-                          _stop_c();
-                        }
+                        _togglePad("C",
+                            cAudioPlayer); // cAudioPlayer é o player associado ao pad C
                       },
                     ),
                     ElevatedButton(
@@ -500,28 +702,25 @@ class _MyHomePageState extends State<MyHomePage> {
                           "C#",
                           style: TextStyle(
                             fontSize: 28,
-                            color: pad_c_sustenido_bool == true
+                            color: cSustenidoAudioPlayer_bool == true
                                 ? Colors.red
                                 : Colors.white,
                           ),
                         ),
                       ),
                       style: ButtonStyle(
-                        fixedSize:
-                            MaterialStateProperty.all<Size>(Size(90, 90)),
+                        fixedSize: WidgetStateProperty.all<Size>(Size(90, 90)),
 
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18.0),
-                                    side: BorderSide(
-                                        color: pad_c_sustenido_bool == true
-                                            ? Colors.red
-                                            : Colors.white))),
-                        backgroundColor:
-                            MaterialStateProperty.resolveWith<Color>(
-                          (Set<MaterialState> states) {
-                            if (pad_c_sustenido_bool == true) {
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                                side: BorderSide(
+                                    color: cSustenidoAudioPlayer_bool == true
+                                        ? Colors.red
+                                        : Colors.white))),
+                        backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                          (Set<WidgetState> states) {
+                            if (cSustenidoAudioPlayer_bool == true) {
                               return Colors.transparent;
                             } else {
                               // Return another color if the condition is false
@@ -531,50 +730,14 @@ class _MyHomePageState extends State<MyHomePage> {
                           },
                         ),
                         elevation:
-                            MaterialStateProperty.all(0), // Set elevation to 0
-                        overlayColor: MaterialStateProperty.all(
+                            WidgetStateProperty.all(0), // Set elevation to 0
+                        overlayColor: WidgetStateProperty.all(
                             Colors.transparent), // Remove overlay color
                         // Add other properties as needed
                       ),
                       onPressed: () {
-                        if (pad_c_sustenido_bool == false) {
-                          _play_c_sustenido();
-                          if (pad_c_bool == true) {
-                            _stop_c();
-                          }
-                          if (pad_d_bool == true) {
-                            _stop_d();
-                          }
-                          if (pad_eb_bool == true) {
-                            _stop_eb();
-                          }
-                          if (pad_e_bool == true) {
-                            _stop_e();
-                          }
-                          if (pad_f_bool == true) {
-                            _stop_f();
-                          }
-                          if (pad_gb_bool == true) {
-                            _stop_gb();
-                          }
-                          if (pad_g_bool == true) {
-                            _stop_g();
-                          }
-                          if (pad_ab_bool == true) {
-                            _stop_ab();
-                          }
-                          if (pad_a_bool == true) {
-                            _stop_a();
-                          }
-                          if (pad_bb_bool == true) {
-                            _stop_bb();
-                          }
-                          if (pad_b_bool == true) {
-                            _stop_b();
-                          }
-                        } else {
-                          _stop_c_sustenido();
-                        }
+                        _togglePad("C#",
+                            cSustenidoAudioPlayer); // cAudioPlayer é o player associado ao pad C
                       },
                     ),
                     ElevatedButton(
@@ -583,28 +746,26 @@ class _MyHomePageState extends State<MyHomePage> {
                           "D",
                           style: TextStyle(
                             fontSize: 28,
-                            color:
-                                pad_d_bool == true ? Colors.red : Colors.white,
+                            color: dAudioPlayer_bool == true
+                                ? Colors.red
+                                : Colors.white,
                           ),
                         ),
                       ),
                       style: ButtonStyle(
                         splashFactory: NoSplash.splashFactory,
-                        fixedSize:
-                            MaterialStateProperty.all<Size>(Size(90, 90)),
+                        fixedSize: WidgetStateProperty.all<Size>(Size(90, 90)),
 
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18.0),
-                                    side: BorderSide(
-                                        color: pad_d_bool == true
-                                            ? Colors.red
-                                            : Colors.white))),
-                        backgroundColor:
-                            MaterialStateProperty.resolveWith<Color>(
-                          (Set<MaterialState> states) {
-                            if (pad_d_bool == true) {
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                                side: BorderSide(
+                                    color: dAudioPlayer_bool == true
+                                        ? Colors.red
+                                        : Colors.white))),
+                        backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                          (Set<WidgetState> states) {
+                            if (dAudioPlayer_bool == true) {
                               return Colors.transparent;
                             } else {
                               // Return another color if the condition is false
@@ -614,50 +775,14 @@ class _MyHomePageState extends State<MyHomePage> {
                           },
                         ),
                         elevation:
-                            MaterialStateProperty.all(0), // Set elevation to 0
-                        overlayColor: MaterialStateProperty.all(
+                            WidgetStateProperty.all(0), // Set elevation to 0
+                        overlayColor: WidgetStateProperty.all(
                             Colors.transparent), // Remove overlay color
                         // Add other properties as needed
                       ),
                       onPressed: () {
-                        if (pad_d_bool == false) {
-                          _play_d();
-                          if (pad_c_bool == true) {
-                            _stop_c();
-                          }
-                          if (pad_c_sustenido_bool == true) {
-                            _stop_c_sustenido();
-                          }
-                          if (pad_eb_bool == true) {
-                            _stop_eb();
-                          }
-                          if (pad_e_bool == true) {
-                            _stop_e();
-                          }
-                          if (pad_f_bool == true) {
-                            _stop_f();
-                          }
-                          if (pad_gb_bool == true) {
-                            _stop_gb();
-                          }
-                          if (pad_g_bool == true) {
-                            _stop_g();
-                          }
-                          if (pad_ab_bool == true) {
-                            _stop_ab();
-                          }
-                          if (pad_a_bool == true) {
-                            _stop_a();
-                          }
-                          if (pad_bb_bool == true) {
-                            _stop_bb();
-                          }
-                          if (pad_b_bool == true) {
-                            _stop_b();
-                          }
-                        } else {
-                          _stop_d();
-                        }
+                        _togglePad("D",
+                            dAudioPlayer); // dAudioPlayer é o player associado ao pad D
                       },
                     ),
                   ],
@@ -674,27 +799,25 @@ class _MyHomePageState extends State<MyHomePage> {
                           "Eb",
                           style: TextStyle(
                             fontSize: 28,
-                            color:
-                                pad_eb_bool == true ? Colors.red : Colors.white,
+                            color: dSustenidoAudioPlayer_bool == true
+                                ? Colors.red
+                                : Colors.white,
                           ),
                         ),
                       ),
                       style: ButtonStyle(
-                        fixedSize:
-                            MaterialStateProperty.all<Size>(Size(90, 90)),
+                        fixedSize: WidgetStateProperty.all<Size>(Size(90, 90)),
 
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18.0),
-                                    side: BorderSide(
-                                        color: pad_eb_bool == true
-                                            ? Colors.red
-                                            : Colors.white))),
-                        backgroundColor:
-                            MaterialStateProperty.resolveWith<Color>(
-                          (Set<MaterialState> states) {
-                            if (pad_eb_bool == true) {
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                                side: BorderSide(
+                                    color: dSustenidoAudioPlayer_bool == true
+                                        ? Colors.red
+                                        : Colors.white))),
+                        backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                          (Set<WidgetState> states) {
+                            if (dSustenidoAudioPlayer_bool == true) {
                               return Colors.transparent;
                             } else {
                               // Return another color if the condition is false
@@ -704,50 +827,14 @@ class _MyHomePageState extends State<MyHomePage> {
                           },
                         ),
                         elevation:
-                            MaterialStateProperty.all(0), // Set elevation to 0
-                        overlayColor: MaterialStateProperty.all(
+                            WidgetStateProperty.all(0), // Set elevation to 0
+                        overlayColor: WidgetStateProperty.all(
                             Colors.transparent), // Remove overlay color
                         // Add other properties as needed
                       ),
                       onPressed: () {
-                        if (pad_eb_bool == false) {
-                          _play_eb();
-                          if (pad_c_bool == true) {
-                            _stop_c();
-                          }
-                          if (pad_c_sustenido_bool == true) {
-                            _stop_c_sustenido();
-                          }
-                          if (pad_d_bool == true) {
-                            _stop_d();
-                          }
-                          if (pad_e_bool == true) {
-                            _stop_e();
-                          }
-                          if (pad_f_bool == true) {
-                            _stop_f();
-                          }
-                          if (pad_gb_bool == true) {
-                            _stop_gb();
-                          }
-                          if (pad_g_bool == true) {
-                            _stop_g();
-                          }
-                          if (pad_ab_bool == true) {
-                            _stop_ab();
-                          }
-                          if (pad_a_bool == true) {
-                            _stop_a();
-                          }
-                          if (pad_bb_bool == true) {
-                            _stop_bb();
-                          }
-                          if (pad_b_bool == true) {
-                            _stop_b();
-                          }
-                        } else {
-                          _stop_eb();
-                        }
+                        _togglePad("D#",
+                            dSustenidoAudioPlayer); // dAudioPlayer é o player associado ao pad D
                       },
                     ),
                     ElevatedButton(
@@ -762,20 +849,17 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       style: ButtonStyle(
-                        fixedSize:
-                            MaterialStateProperty.all<Size>(Size(90, 90)),
+                        fixedSize: WidgetStateProperty.all<Size>(Size(90, 90)),
 
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18.0),
-                                    side: BorderSide(
-                                        color: pad_e_bool == true
-                                            ? Colors.red
-                                            : Colors.white))),
-                        backgroundColor:
-                            MaterialStateProperty.resolveWith<Color>(
-                          (Set<MaterialState> states) {
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                                side: BorderSide(
+                                    color: pad_e_bool == true
+                                        ? Colors.red
+                                        : Colors.white))),
+                        backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                          (Set<WidgetState> states) {
                             if (pad_e_bool == true) {
                               return Colors.transparent;
                             } else {
@@ -786,8 +870,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           },
                         ),
                         elevation:
-                            MaterialStateProperty.all(0), // Set elevation to 0
-                        overlayColor: MaterialStateProperty.all(
+                            WidgetStateProperty.all(0), // Set elevation to 0
+                        overlayColor: WidgetStateProperty.all(
                             Colors.transparent), // Remove overlay color
                         // Add other properties as needed
                       ),
@@ -844,20 +928,17 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       style: ButtonStyle(
-                        fixedSize:
-                            MaterialStateProperty.all<Size>(Size(90, 90)),
+                        fixedSize: WidgetStateProperty.all<Size>(Size(90, 90)),
 
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18.0),
-                                    side: BorderSide(
-                                        color: pad_f_bool == true
-                                            ? Colors.red
-                                            : Colors.white))),
-                        backgroundColor:
-                            MaterialStateProperty.resolveWith<Color>(
-                          (Set<MaterialState> states) {
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                                side: BorderSide(
+                                    color: pad_f_bool == true
+                                        ? Colors.red
+                                        : Colors.white))),
+                        backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                          (Set<WidgetState> states) {
                             if (pad_f_bool == true) {
                               return Colors.transparent;
                             } else {
@@ -868,8 +949,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           },
                         ),
                         elevation:
-                            MaterialStateProperty.all(0), // Set elevation to 0
-                        overlayColor: MaterialStateProperty.all(
+                            WidgetStateProperty.all(0), // Set elevation to 0
+                        overlayColor: WidgetStateProperty.all(
                             Colors.transparent), // Remove overlay color
                         // Add other properties as needed
                       ),
@@ -934,20 +1015,17 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       style: ButtonStyle(
-                        fixedSize:
-                            MaterialStateProperty.all<Size>(Size(90, 90)),
+                        fixedSize: WidgetStateProperty.all<Size>(Size(90, 90)),
 
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18.0),
-                                    side: BorderSide(
-                                        color: pad_gb_bool == true
-                                            ? Colors.red
-                                            : Colors.white))),
-                        backgroundColor:
-                            MaterialStateProperty.resolveWith<Color>(
-                          (Set<MaterialState> states) {
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                                side: BorderSide(
+                                    color: pad_gb_bool == true
+                                        ? Colors.red
+                                        : Colors.white))),
+                        backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                          (Set<WidgetState> states) {
                             if (pad_gb_bool == true) {
                               return Colors.transparent;
                             } else {
@@ -958,8 +1036,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           },
                         ),
                         elevation:
-                            MaterialStateProperty.all(0), // Set elevation to 0
-                        overlayColor: MaterialStateProperty.all(
+                            WidgetStateProperty.all(0), // Set elevation to 0
+                        overlayColor: WidgetStateProperty.all(
                             Colors.transparent), // Remove overlay color
                         // Add other properties as needed
                       ),
@@ -1016,20 +1094,17 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       style: ButtonStyle(
-                        fixedSize:
-                            MaterialStateProperty.all<Size>(Size(90, 90)),
+                        fixedSize: WidgetStateProperty.all<Size>(Size(90, 90)),
 
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18.0),
-                                    side: BorderSide(
-                                        color: pad_g_bool == true
-                                            ? Colors.red
-                                            : Colors.white))),
-                        backgroundColor:
-                            MaterialStateProperty.resolveWith<Color>(
-                          (Set<MaterialState> states) {
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                                side: BorderSide(
+                                    color: pad_g_bool == true
+                                        ? Colors.red
+                                        : Colors.white))),
+                        backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                          (Set<WidgetState> states) {
                             if (pad_g_bool == true) {
                               return Colors.transparent;
                             } else {
@@ -1040,8 +1115,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           },
                         ),
                         elevation:
-                            MaterialStateProperty.all(0), // Set elevation to 0
-                        overlayColor: MaterialStateProperty.all(
+                            WidgetStateProperty.all(0), // Set elevation to 0
+                        overlayColor: WidgetStateProperty.all(
                             Colors.transparent), // Remove overlay color
                         // Add other properties as needed
                       ),
@@ -1098,20 +1173,17 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       style: ButtonStyle(
-                        fixedSize:
-                            MaterialStateProperty.all<Size>(Size(90, 90)),
+                        fixedSize: WidgetStateProperty.all<Size>(Size(90, 90)),
 
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18.0),
-                                    side: BorderSide(
-                                        color: pad_ab_bool == true
-                                            ? Colors.red
-                                            : Colors.white))),
-                        backgroundColor:
-                            MaterialStateProperty.resolveWith<Color>(
-                          (Set<MaterialState> states) {
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                                side: BorderSide(
+                                    color: pad_ab_bool == true
+                                        ? Colors.red
+                                        : Colors.white))),
+                        backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                          (Set<WidgetState> states) {
                             if (pad_ab_bool == true) {
                               return Colors.transparent;
                             } else {
@@ -1122,8 +1194,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           },
                         ),
                         elevation:
-                            MaterialStateProperty.all(0), // Set elevation to 0
-                        overlayColor: MaterialStateProperty.all(
+                            WidgetStateProperty.all(0), // Set elevation to 0
+                        overlayColor: WidgetStateProperty.all(
                             Colors.transparent), // Remove overlay color
                         // Add other properties as needed
                       ),
@@ -1188,20 +1260,17 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       style: ButtonStyle(
-                        fixedSize:
-                            MaterialStateProperty.all<Size>(Size(90, 90)),
+                        fixedSize: WidgetStateProperty.all<Size>(Size(90, 90)),
 
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18.0),
-                                    side: BorderSide(
-                                        color: pad_a_bool == true
-                                            ? Colors.red
-                                            : Colors.white))),
-                        backgroundColor:
-                            MaterialStateProperty.resolveWith<Color>(
-                          (Set<MaterialState> states) {
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                                side: BorderSide(
+                                    color: pad_a_bool == true
+                                        ? Colors.red
+                                        : Colors.white))),
+                        backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                          (Set<WidgetState> states) {
                             if (pad_a_bool == true) {
                               return Colors.transparent;
                             } else {
@@ -1212,8 +1281,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           },
                         ),
                         elevation:
-                            MaterialStateProperty.all(0), // Set elevation to 0
-                        overlayColor: MaterialStateProperty.all(
+                            WidgetStateProperty.all(0), // Set elevation to 0
+                        overlayColor: WidgetStateProperty.all(
                             Colors.transparent), // Remove overlay color
                         // Add other properties as needed
                       ),
@@ -1270,20 +1339,17 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       style: ButtonStyle(
-                        fixedSize:
-                            MaterialStateProperty.all<Size>(Size(90, 90)),
+                        fixedSize: WidgetStateProperty.all<Size>(Size(90, 90)),
 
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18.0),
-                                    side: BorderSide(
-                                        color: pad_bb_bool == true
-                                            ? Colors.red
-                                            : Colors.white))),
-                        backgroundColor:
-                            MaterialStateProperty.resolveWith<Color>(
-                          (Set<MaterialState> states) {
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                                side: BorderSide(
+                                    color: pad_bb_bool == true
+                                        ? Colors.red
+                                        : Colors.white))),
+                        backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                          (Set<WidgetState> states) {
                             if (pad_bb_bool == true) {
                               return Colors.transparent;
                             } else {
@@ -1294,8 +1360,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           },
                         ),
                         elevation:
-                            MaterialStateProperty.all(0), // Set elevation to 0
-                        overlayColor: MaterialStateProperty.all(
+                            WidgetStateProperty.all(0), // Set elevation to 0
+                        overlayColor: WidgetStateProperty.all(
                             Colors.transparent), // Remove overlay color
                         // Add other properties as needed
                       ),
@@ -1352,20 +1418,17 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       style: ButtonStyle(
-                        fixedSize:
-                            MaterialStateProperty.all<Size>(Size(90, 90)),
+                        fixedSize: WidgetStateProperty.all<Size>(Size(90, 90)),
 
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18.0),
-                                    side: BorderSide(
-                                        color: pad_b_bool == true
-                                            ? Colors.red
-                                            : Colors.white))),
-                        backgroundColor:
-                            MaterialStateProperty.resolveWith<Color>(
-                          (Set<MaterialState> states) {
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                                side: BorderSide(
+                                    color: pad_b_bool == true
+                                        ? Colors.red
+                                        : Colors.white))),
+                        backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                          (Set<WidgetState> states) {
                             if (pad_b_bool == true) {
                               return Colors.transparent;
                             } else {
@@ -1376,8 +1439,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           },
                         ),
                         elevation:
-                            MaterialStateProperty.all(0), // Set elevation to 0
-                        overlayColor: MaterialStateProperty.all(
+                            WidgetStateProperty.all(0), // Set elevation to 0
+                        overlayColor: WidgetStateProperty.all(
                             Colors.transparent), // Remove overlay color
                         // Add other properties as needed
                       ),
@@ -1430,12 +1493,12 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               ElevatedButton(
                   style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(18.0),
                             side: BorderSide(color: Colors.white))),
-                    backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                      (Set<MaterialState> states) {
+                    backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                      (Set<WidgetState> states) {
                         return Colors.transparent;
                       },
                     ),
