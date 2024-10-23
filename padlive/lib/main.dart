@@ -38,6 +38,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  double currentVolume = 0.5; // Volume inicial
+
   // Notas naturais
   final cAudioPlayer = AudioPlayer();
   bool cAudioPlayer_bool = false;
@@ -148,14 +150,52 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
+  // Função para ajustar o volume do pad ativo
+  void _adjustVolume(double volume) {
+    setState(() {
+      currentVolume = volume;
+    });
+
+    cAudioPlayer.setVolume(volume);
+    cSustenidoAudioPlayer.setVolume(volume);
+    dAudioPlayer.setVolume(volume);
+    dSustenidoAudioPlayer.setVolume(volume);
+    eAudioPlayer.setVolume(volume);
+    fAudioPlayer.setVolume(volume);
+    fSustenidoAudioPlayer.setVolume(volume);
+    gAudioPlayer.setVolume(volume);
+    gSustenidoAudioPlayer.setVolume(volume);
+    aAudioPlayer.setVolume(volume);
+    aSustenidoAudioPlayer.setVolume(volume);
+    bAudioPlayer.setVolume(volume);
+  }
+
+  // Função para aumentar o volume com os botões
+  void _increaseVolume(AudioPlayer currentAudioPlayer) {
+    setState(() {
+      currentVolume =
+          (currentVolume + 0.1).clamp(0.0, 1.0); // Limita o volume entre 0 e 1
+    });
+    currentAudioPlayer.setVolume(currentVolume);
+  }
+
+  // Função para diminuir o volume com os botões
+  void _decreaseVolume(AudioPlayer currentAudioPlayer) {
+    setState(() {
+      currentVolume = (currentVolume - 0.1).clamp(0.0, 1.0);
+    });
+    currentAudioPlayer.setVolume(currentVolume);
+  }
+
   Future<void> _fadeOutCurrentPad(AudioPlayer currentAudioPlayer) async {
     // Faz fade-out do áudio atual
     for (double i = currentAudioPlayer.volume; i >= 0; i -= 0.1) {
-      await Future.delayed(const Duration(milliseconds: 200), () {
+      await Future.delayed(const Duration(milliseconds: 50), () {
         setState(() {
           currentAudioPlayer.setVolume(i);
         });
-        print("Diminuindo volume: ${currentAudioPlayer.volume}");
+        print(
+            "Diminuindo volume de : ${currentAudioPlayer.source}, ${currentAudioPlayer.volume}");
       });
     }
     currentAudioPlayer.stop();
@@ -163,8 +203,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _fadeInNewPad(AudioPlayer newAudioPlayer) async {
     // Faz fade-in do novo áudio
-    for (double i = 0; i <= 1; i += 0.1) {
-      await Future.delayed(const Duration(milliseconds: 200), () {
+    for (double i = 0; i <= currentVolume; i += 0.1) {
+      await Future.delayed(const Duration(milliseconds: 50), () {
         setState(() {
           newAudioPlayer.setVolume(i);
         });
@@ -317,6 +357,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     // Toca o novo pad com o áudio correspondente
+
     _playNewPad(newAudioPlayer, audioPath);
   }
 
@@ -642,6 +683,45 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Column(
+                children: [
+                  // Slider de controle de volume
+
+                  SliderTheme(
+                    data: SliderTheme.of(context).copyWith(
+                      activeTrackColor:
+                          Colors.red, // Cor da parte ativa do slider
+                      inactiveTrackColor:
+                          Colors.red.withOpacity(0.5), // Cor da parte inativa
+                      trackShape:
+                          RectangularSliderTrackShape(), // Forma retangular da trilha
+                      trackHeight: 16.0, // Altura do retângulo
+                      thumbColor: Colors.transparent, // Cor do "pino"
+                      thumbShape: RoundSliderThumbShape(
+                          enabledThumbRadius: 10.0,
+                          disabledThumbRadius: 0.21), // Tamanho do "pino"
+                      overlayColor: Colors.red
+                          .withOpacity(0.0), // Cor do overlay ao arrastar
+                    ),
+                    child: Slider(
+                      value: currentVolume,
+                      min: 0.0,
+                      max: 1.0,
+                      label: (currentVolume * 100).toInt().toString(),
+                      onChanged: (double value) {
+                        setState(() {
+                          _adjustVolume(value);
+                        });
+                      },
+                    ),
+                  ),
+                  // Botões de aumentar e diminuir volume
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [],
+                  ),
+                ],
+              ),
               Container(
                 child: Image.asset('assets/logo.png'),
                 margin: EdgeInsets.only(bottom: 24),
@@ -843,8 +923,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           "E",
                           style: TextStyle(
                             fontSize: 28,
-                            color:
-                                pad_e_bool == true ? Colors.red : Colors.white,
+                            color: eAudioPlayer_bool == true
+                                ? Colors.red
+                                : Colors.white,
                           ),
                         ),
                       ),
@@ -855,12 +936,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(18.0),
                                 side: BorderSide(
-                                    color: pad_e_bool == true
+                                    color: eAudioPlayer_bool == true
                                         ? Colors.red
                                         : Colors.white))),
                         backgroundColor: WidgetStateProperty.resolveWith<Color>(
                           (Set<WidgetState> states) {
-                            if (pad_e_bool == true) {
+                            if (eAudioPlayer_bool == true) {
                               return Colors.transparent;
                             } else {
                               // Return another color if the condition is false
@@ -876,44 +957,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         // Add other properties as needed
                       ),
                       onPressed: () {
-                        if (pad_e_bool == false) {
-                          _play_e();
-                          if (pad_c_bool == true) {
-                            _stop_c();
-                          }
-                          if (pad_c_sustenido_bool == true) {
-                            _stop_c_sustenido();
-                          }
-                          if (pad_d_bool == true) {
-                            _stop_d();
-                          }
-                          if (pad_eb_bool == true) {
-                            _stop_eb();
-                          }
-                          if (pad_f_bool == true) {
-                            _stop_f();
-                          }
-                          if (pad_gb_bool == true) {
-                            _stop_gb();
-                          }
-                          if (pad_g_bool == true) {
-                            _stop_g();
-                          }
-                          if (pad_ab_bool == true) {
-                            _stop_ab();
-                          }
-                          if (pad_a_bool == true) {
-                            _stop_a();
-                          }
-                          if (pad_bb_bool == true) {
-                            _stop_bb();
-                          }
-                          if (pad_b_bool == true) {
-                            _stop_b();
-                          }
-                        } else {
-                          _stop_e();
-                        }
+                        _togglePad("E",
+                            eAudioPlayer); // dAudioPlayer é o player associado ao pad D
                       },
                     ),
                     ElevatedButton(
@@ -922,8 +967,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           "F",
                           style: TextStyle(
                             fontSize: 28,
-                            color:
-                                pad_f_bool == true ? Colors.red : Colors.white,
+                            color: fAudioPlayer_bool == true
+                                ? Colors.red
+                                : Colors.white,
                           ),
                         ),
                       ),
@@ -934,12 +980,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(18.0),
                                 side: BorderSide(
-                                    color: pad_f_bool == true
+                                    color: fAudioPlayer_bool == true
                                         ? Colors.red
                                         : Colors.white))),
                         backgroundColor: WidgetStateProperty.resolveWith<Color>(
                           (Set<WidgetState> states) {
-                            if (pad_f_bool == true) {
+                            if (fAudioPlayer_bool == true) {
                               return Colors.transparent;
                             } else {
                               // Return another color if the condition is false
@@ -955,44 +1001,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         // Add other properties as needed
                       ),
                       onPressed: () {
-                        if (pad_f_bool == false) {
-                          _play_f();
-                          if (pad_c_bool == true) {
-                            _stop_c();
-                          }
-                          if (pad_c_sustenido_bool == true) {
-                            _stop_c_sustenido();
-                          }
-                          if (pad_d_bool == true) {
-                            _stop_d();
-                          }
-                          if (pad_eb_bool == true) {
-                            _stop_eb();
-                          }
-                          if (pad_e_bool == true) {
-                            _stop_e();
-                          }
-                          if (pad_gb_bool == true) {
-                            _stop_gb();
-                          }
-                          if (pad_g_bool == true) {
-                            _stop_g();
-                          }
-                          if (pad_ab_bool == true) {
-                            _stop_ab();
-                          }
-                          if (pad_a_bool == true) {
-                            _stop_a();
-                          }
-                          if (pad_bb_bool == true) {
-                            _stop_bb();
-                          }
-                          if (pad_b_bool == true) {
-                            _stop_b();
-                          }
-                        } else {
-                          _stop_f();
-                        }
+                        _togglePad("F",
+                            fAudioPlayer); // dAudioPlayer é o player associado ao pad D
                       },
                     ),
                   ],
@@ -1009,8 +1019,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           "Gb",
                           style: TextStyle(
                             fontSize: 28,
-                            color:
-                                pad_gb_bool == true ? Colors.red : Colors.white,
+                            color: fSustenidoAudioPlayer_bool == true
+                                ? Colors.red
+                                : Colors.white,
                           ),
                         ),
                       ),
@@ -1021,12 +1032,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(18.0),
                                 side: BorderSide(
-                                    color: pad_gb_bool == true
+                                    color: fSustenidoAudioPlayer_bool == true
                                         ? Colors.red
                                         : Colors.white))),
                         backgroundColor: WidgetStateProperty.resolveWith<Color>(
                           (Set<WidgetState> states) {
-                            if (pad_gb_bool == true) {
+                            if (fSustenidoAudioPlayer_bool == true) {
                               return Colors.transparent;
                             } else {
                               // Return another color if the condition is false
@@ -1042,44 +1053,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         // Add other properties as needed
                       ),
                       onPressed: () {
-                        if (pad_gb_bool == false) {
-                          _play_gb();
-                          if (pad_c_bool == true) {
-                            _stop_c();
-                          }
-                          if (pad_c_sustenido_bool == true) {
-                            _stop_c_sustenido();
-                          }
-                          if (pad_d_bool == true) {
-                            _stop_d();
-                          }
-                          if (pad_eb_bool == true) {
-                            _stop_eb();
-                          }
-                          if (pad_e_bool == true) {
-                            _stop_e();
-                          }
-                          if (pad_f_bool == true) {
-                            _stop_f();
-                          }
-                          if (pad_g_bool == true) {
-                            _stop_g();
-                          }
-                          if (pad_ab_bool == true) {
-                            _stop_ab();
-                          }
-                          if (pad_a_bool == true) {
-                            _stop_a();
-                          }
-                          if (pad_bb_bool == true) {
-                            _stop_bb();
-                          }
-                          if (pad_b_bool == true) {
-                            _stop_b();
-                          }
-                        } else {
-                          _stop_gb();
-                        }
+                        _togglePad("F#",
+                            fSustenidoAudioPlayer); // cAudioPlayer é o player associado ao pad C
                       },
                     ),
                     ElevatedButton(
@@ -1088,8 +1063,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           "G",
                           style: TextStyle(
                             fontSize: 28,
-                            color:
-                                pad_g_bool == true ? Colors.red : Colors.white,
+                            color: gAudioPlayer_bool == true
+                                ? Colors.red
+                                : Colors.white,
                           ),
                         ),
                       ),
@@ -1100,12 +1076,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(18.0),
                                 side: BorderSide(
-                                    color: pad_g_bool == true
+                                    color: gAudioPlayer_bool == true
                                         ? Colors.red
                                         : Colors.white))),
                         backgroundColor: WidgetStateProperty.resolveWith<Color>(
                           (Set<WidgetState> states) {
-                            if (pad_g_bool == true) {
+                            if (gAudioPlayer_bool == true) {
                               return Colors.transparent;
                             } else {
                               // Return another color if the condition is false
@@ -1121,44 +1097,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         // Add other properties as needed
                       ),
                       onPressed: () {
-                        if (pad_g_bool == false) {
-                          _play_g();
-                          if (pad_c_bool == true) {
-                            _stop_c();
-                          }
-                          if (pad_c_sustenido_bool == true) {
-                            _stop_c_sustenido();
-                          }
-                          if (pad_d_bool == true) {
-                            _stop_d();
-                          }
-                          if (pad_eb_bool == true) {
-                            _stop_eb();
-                          }
-                          if (pad_e_bool == true) {
-                            _stop_e();
-                          }
-                          if (pad_f_bool == true) {
-                            _stop_f();
-                          }
-                          if (pad_gb_bool == true) {
-                            _stop_gb();
-                          }
-                          if (pad_ab_bool == true) {
-                            _stop_ab();
-                          }
-                          if (pad_a_bool == true) {
-                            _stop_a();
-                          }
-                          if (pad_bb_bool == true) {
-                            _stop_bb();
-                          }
-                          if (pad_b_bool == true) {
-                            _stop_b();
-                          }
-                        } else {
-                          _stop_g();
-                        }
+                        _togglePad("G",
+                            gAudioPlayer); // cAudioPlayer é o player associado ao pad C
                       },
                     ),
                     ElevatedButton(
@@ -1167,8 +1107,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           "Ab",
                           style: TextStyle(
                             fontSize: 28,
-                            color:
-                                pad_ab_bool == true ? Colors.red : Colors.white,
+                            color: gSustenidoAudioPlayer_bool == true
+                                ? Colors.red
+                                : Colors.white,
                           ),
                         ),
                       ),
@@ -1179,12 +1120,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(18.0),
                                 side: BorderSide(
-                                    color: pad_ab_bool == true
+                                    color: gSustenidoAudioPlayer_bool == true
                                         ? Colors.red
                                         : Colors.white))),
                         backgroundColor: WidgetStateProperty.resolveWith<Color>(
                           (Set<WidgetState> states) {
-                            if (pad_ab_bool == true) {
+                            if (gSustenidoAudioPlayer_bool == true) {
                               return Colors.transparent;
                             } else {
                               // Return another color if the condition is false
@@ -1200,44 +1141,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         // Add other properties as needed
                       ),
                       onPressed: () {
-                        if (pad_ab_bool == false) {
-                          _play_ab();
-                          if (pad_c_bool == true) {
-                            _stop_c();
-                          }
-                          if (pad_c_sustenido_bool == true) {
-                            _stop_c_sustenido();
-                          }
-                          if (pad_d_bool == true) {
-                            _stop_d();
-                          }
-                          if (pad_eb_bool == true) {
-                            _stop_eb();
-                          }
-                          if (pad_e_bool == true) {
-                            _stop_e();
-                          }
-                          if (pad_f_bool == true) {
-                            _stop_f();
-                          }
-                          if (pad_g_bool == true) {
-                            _stop_g();
-                          }
-                          if (pad_gb_bool == true) {
-                            _stop_gb();
-                          }
-                          if (pad_a_bool == true) {
-                            _stop_a();
-                          }
-                          if (pad_bb_bool == true) {
-                            _stop_bb();
-                          }
-                          if (pad_b_bool == true) {
-                            _stop_b();
-                          }
-                        } else {
-                          _stop_ab();
-                        }
+                        _togglePad("G#",
+                            gSustenidoAudioPlayer); // cAudioPlayer é o player associado ao pad C
                       },
                     ),
                   ],
@@ -1254,8 +1159,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           "A",
                           style: TextStyle(
                             fontSize: 28,
-                            color:
-                                pad_a_bool == true ? Colors.red : Colors.white,
+                            color: aAudioPlayer_bool == true
+                                ? Colors.red
+                                : Colors.white,
                           ),
                         ),
                       ),
@@ -1266,12 +1172,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(18.0),
                                 side: BorderSide(
-                                    color: pad_a_bool == true
+                                    color: aAudioPlayer_bool == true
                                         ? Colors.red
                                         : Colors.white))),
                         backgroundColor: WidgetStateProperty.resolveWith<Color>(
                           (Set<WidgetState> states) {
-                            if (pad_a_bool == true) {
+                            if (aAudioPlayer_bool == true) {
                               return Colors.transparent;
                             } else {
                               // Return another color if the condition is false
@@ -1287,44 +1193,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         // Add other properties as needed
                       ),
                       onPressed: () {
-                        if (pad_a_bool == false) {
-                          _play_a();
-                          if (pad_c_bool == true) {
-                            _stop_c();
-                          }
-                          if (pad_c_sustenido_bool == true) {
-                            _stop_c_sustenido();
-                          }
-                          if (pad_d_bool == true) {
-                            _stop_d();
-                          }
-                          if (pad_eb_bool == true) {
-                            _stop_eb();
-                          }
-                          if (pad_e_bool == true) {
-                            _stop_e();
-                          }
-                          if (pad_f_bool == true) {
-                            _stop_f();
-                          }
-                          if (pad_gb_bool == true) {
-                            _stop_gb();
-                          }
-                          if (pad_g_bool == true) {
-                            _stop_g();
-                          }
-                          if (pad_ab_bool == true) {
-                            _stop_ab();
-                          }
-                          if (pad_bb_bool == true) {
-                            _stop_bb();
-                          }
-                          if (pad_b_bool == true) {
-                            _stop_b();
-                          }
-                        } else {
-                          _stop_a();
-                        }
+                        _togglePad("A",
+                            aAudioPlayer); // cAudioPlayer é o player associado ao pad C
                       },
                     ),
                     ElevatedButton(
@@ -1333,8 +1203,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           "Bb",
                           style: TextStyle(
                             fontSize: 28,
-                            color:
-                                pad_bb_bool == true ? Colors.red : Colors.white,
+                            color: aSustenidoAudioPlayer_bool == true
+                                ? Colors.red
+                                : Colors.white,
                           ),
                         ),
                       ),
@@ -1345,12 +1216,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(18.0),
                                 side: BorderSide(
-                                    color: pad_bb_bool == true
+                                    color: aSustenidoAudioPlayer_bool == true
                                         ? Colors.red
                                         : Colors.white))),
                         backgroundColor: WidgetStateProperty.resolveWith<Color>(
                           (Set<WidgetState> states) {
-                            if (pad_bb_bool == true) {
+                            if (aSustenidoAudioPlayer_bool == true) {
                               return Colors.transparent;
                             } else {
                               // Return another color if the condition is false
@@ -1366,44 +1237,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         // Add other properties as needed
                       ),
                       onPressed: () {
-                        if (pad_bb_bool == false) {
-                          _play_bb();
-                          if (pad_c_bool == true) {
-                            _stop_c();
-                          }
-                          if (pad_c_sustenido_bool == true) {
-                            _stop_c_sustenido();
-                          }
-                          if (pad_d_bool == true) {
-                            _stop_d();
-                          }
-                          if (pad_eb_bool == true) {
-                            _stop_eb();
-                          }
-                          if (pad_e_bool == true) {
-                            _stop_e();
-                          }
-                          if (pad_f_bool == true) {
-                            _stop_f();
-                          }
-                          if (pad_gb_bool == true) {
-                            _stop_gb();
-                          }
-                          if (pad_g_bool == true) {
-                            _stop_g();
-                          }
-                          if (pad_ab_bool == true) {
-                            _stop_ab();
-                          }
-                          if (pad_a_bool == true) {
-                            _stop_a();
-                          }
-                          if (pad_b_bool == true) {
-                            _stop_b();
-                          }
-                        } else {
-                          _stop_bb();
-                        }
+                        _togglePad("A#",
+                            aSustenidoAudioPlayer); // cAudioPlayer é o player associado ao pad C
                       },
                     ),
                     ElevatedButton(
@@ -1412,8 +1247,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           "B",
                           style: TextStyle(
                             fontSize: 28,
-                            color:
-                                pad_b_bool == true ? Colors.red : Colors.white,
+                            color: bAudioPlayer_bool == true
+                                ? Colors.red
+                                : Colors.white,
                           ),
                         ),
                       ),
@@ -1424,12 +1260,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(18.0),
                                 side: BorderSide(
-                                    color: pad_b_bool == true
+                                    color: bAudioPlayer_bool == true
                                         ? Colors.red
                                         : Colors.white))),
                         backgroundColor: WidgetStateProperty.resolveWith<Color>(
                           (Set<WidgetState> states) {
-                            if (pad_b_bool == true) {
+                            if (bAudioPlayer_bool == true) {
                               return Colors.transparent;
                             } else {
                               // Return another color if the condition is false
@@ -1445,81 +1281,13 @@ class _MyHomePageState extends State<MyHomePage> {
                         // Add other properties as needed
                       ),
                       onPressed: () {
-                        if (pad_b_bool == false) {
-                          _play_b();
-                          if (pad_c_bool == true) {
-                            _stop_c();
-                          }
-                          if (pad_c_sustenido_bool == true) {
-                            _stop_c_sustenido();
-                          }
-                          if (pad_d_bool == true) {
-                            _stop_d();
-                          }
-                          if (pad_eb_bool == true) {
-                            _stop_eb();
-                          }
-                          if (pad_e_bool == true) {
-                            _stop_e();
-                          }
-                          if (pad_f_bool == true) {
-                            _stop_f();
-                          }
-                          if (pad_gb_bool == true) {
-                            _stop_gb();
-                          }
-                          if (pad_g_bool == true) {
-                            _stop_g();
-                          }
-                          if (pad_ab_bool == true) {
-                            _stop_ab();
-                          }
-                          if (pad_a_bool == true) {
-                            _stop_a();
-                          }
-                          if (pad_bb_bool == true) {
-                            _stop_bb();
-                            if (pad_gb_bool == true) {
-                              _stop_gb();
-                            }
-                          }
-                        } else {
-                          _stop_b();
-                        }
+                        _togglePad("B",
+                            bAudioPlayer); // cAudioPlayer é o player associado ao pad C
                       },
                     ),
                   ],
                 ),
               ),
-              ElevatedButton(
-                  style: ButtonStyle(
-                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                            side: BorderSide(color: Colors.white))),
-                    backgroundColor: WidgetStateProperty.resolveWith<Color>(
-                      (Set<WidgetState> states) {
-                        return Colors.transparent;
-                      },
-                    ),
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      pad_d_bool = false;
-                      pad_c_bool = false;
-                      pad_c_sustenido_bool = false;
-                    });
-                    _stoping_c(pad_c);
-                    _stoping_c(pad_c_sustenido);
-                    _stoping_d(pad_d);
-                  },
-                  child: Text(
-                    "END",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.white,
-                    ),
-                  )),
             ],
           ),
         ),
