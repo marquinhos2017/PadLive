@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
@@ -29,6 +31,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
+  // Função para mostrar o pad e o LED
+
   const MyHomePage({super.key, required this.title});
 
   final String title;
@@ -38,6 +42,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  @override
+  void initState() {
+    super.initState();
+
+    // Inicializando o timer
+    _ledTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        _ledState = !_ledState;
+      });
+    });
+  }
+
+  bool _ledState = false; // Estado do LED
+  late Timer? _ledTimer; // Timer para alternar o estado do LED
+  bool isTransitioning = false; // Controle de transição
   double currentVolume = 0.5; // Volume inicial
 
   // Notas naturais
@@ -147,6 +166,7 @@ class _MyHomePageState extends State<MyHomePage> {
     aSustenidoAudioPlayer.dispose();
 
     // Chamar super.dispose uma única vez
+    _ledTimer?.cancel(); // Cancelar o Timer do LED
     super.dispose();
   }
 
@@ -188,9 +208,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _fadeOutCurrentPad(AudioPlayer currentAudioPlayer) async {
-    // Faz fade-out do áudio atual
     for (double i = currentAudioPlayer.volume; i >= 0; i -= 0.1) {
-      await Future.delayed(const Duration(milliseconds: 50), () {
+      await Future.delayed(const Duration(milliseconds: 300), () {
         setState(() {
           currentAudioPlayer.setVolume(i);
         });
@@ -204,7 +223,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> _fadeInNewPad(AudioPlayer newAudioPlayer) async {
     // Faz fade-in do novo áudio
     for (double i = 0; i <= currentVolume; i += 0.1) {
-      await Future.delayed(const Duration(milliseconds: 50), () {
+      await Future.delayed(const Duration(milliseconds: 300), () {
         setState(() {
           newAudioPlayer.setVolume(i);
         });
@@ -264,7 +283,39 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  // Função que alterna o estado do LED a cada 1 segundo
+  // Função que alterna o estado do LED a cada 1 segundo
+  void _toggleLed() {
+    if (_isAnyPlayerActive()) {
+      // Se há algum player ativo e o timer não está rodando, cria um novo timer
+      if (_ledTimer == null || !_ledTimer!.isActive) {
+        _ledTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+          setState(() {
+            _ledState = !_ledState; // Alterna o estado do LED a cada 1 segundo
+          });
+        });
+      }
+    } else {
+      // Se nenhum player estiver ativo, desliga o LED e cancela o timer
+      if (_ledTimer != null && _ledTimer!.isActive) {
+        _ledState = false; // Desliga o LED
+        _ledTimer!.cancel(); // Cancela o timer
+        _ledTimer = null; // Limpa o timer
+        setState(() {}); // Atualiza a interface para refletir a mudança
+      }
+    }
+  }
+
   void _handlePadPress(String padName, AudioPlayer newAudioPlayer) {
+    if (isTransitioning) {
+      // Ignorar o clique durante a transição
+      print("Transição em andamento, ação ignorada.");
+      return;
+    }
+
+    setState(() {
+      isTransitioning = true; // Bloqueia outras ações
+    });
     String audioPath = "";
 
     // Verifica qual pad está tocando e para o áudio
@@ -359,322 +410,162 @@ class _MyHomePageState extends State<MyHomePage> {
     // Toca o novo pad com o áudio correspondente
 
     _playNewPad(newAudioPlayer, audioPath);
+
+    setState(() {
+      isTransitioning = false; // Libera o bloqueio após a transição
+    });
   }
 
-  Future<void> _playing_c(AudioPlayer audioplayer) async {
-    for (double i = audioplayer.volume; i <= 1; i += 0.1) {
-      await Future.delayed(const Duration(milliseconds: 500), () {
-        setState(() {
-          audioplayer.setVolume((i));
-        });
-        print("Aumentando C Pad ${audioplayer.volume}");
-      });
-      if (pad_c_bool == false) {
-        break;
-      }
-    }
+  void _stop2() {
+    // Verificação das notas naturais e seus booleans
+
+    _fadeOutCurrentPad(cAudioPlayer);
+    cAudioPlayer_bool = false;
+
+    _fadeOutCurrentPad(cSustenidoAudioPlayer);
+    cSustenidoAudioPlayer_bool = false;
+
+    _fadeOutCurrentPad(dAudioPlayer);
+    _fadeOutCurrentPad(dSustenidoAudioPlayer);
+    _fadeOutCurrentPad(eAudioPlayer);
+    _fadeOutCurrentPad(fSustenidoAudioPlayer);
+    _fadeOutCurrentPad(fAudioPlayer);
+    _fadeOutCurrentPad(gAudioPlayer);
+    _fadeOutCurrentPad(gSustenidoAudioPlayer);
+    _fadeOutCurrentPad(aAudioPlayer);
+    _fadeOutCurrentPad(aSustenidoAudioPlayer);
+    _fadeOutCurrentPad(bAudioPlayer);
+    dAudioPlayer_bool = false;
+
+    dSustenidoAudioPlayer_bool = false;
+
+    eAudioPlayer_bool = false;
+
+    fAudioPlayer_bool = false;
+
+    fSustenidoAudioPlayer_bool = false;
+
+    gAudioPlayer_bool = false;
+
+    gSustenidoAudioPlayer_bool = false;
+
+    aAudioPlayer_bool = false;
+
+    aSustenidoAudioPlayer_bool = false;
+
+    bAudioPlayer_bool = false;
   }
 
-  Future<void> _stoping_c(AudioPlayer audioplayer) async {
-    for (double i = audioplayer.volume; i >= 0; i -= 0.1) {
-      await Future.delayed(const Duration(milliseconds: 500), () {
-        setState(() {
-          audioplayer.setVolume((i));
-        });
-        print("Diminuindo Pad C ${audioplayer.volume}");
-      });
-    }
-    print("C Parado");
-    audioplayer.stop();
-  }
-
-  Future<void> _playing_c_sus(AudioPlayer audioplayer) async {
-    for (double i = audioplayer.volume; i <= 1; i += 0.1) {
-      await Future.delayed(const Duration(milliseconds: 500), () {
-        setState(() {
-          audioplayer.setVolume((i));
-        });
-        print(audioplayer.volume);
-      });
-      if (pad_c_sustenido_bool == false) {
-        break;
-      }
-    }
-  }
-
-  Future<void> _stoping_c_sus(AudioPlayer audioplayer) async {
-    for (double i = audioplayer.volume; i >= 0; i -= 0.1) {
-      await Future.delayed(const Duration(milliseconds: 500), () {
-        setState(() {
-          audioplayer.setVolume((i));
-        });
-        print("Parando C sustenido");
-        print(audioplayer.volume);
-      });
-    }
-
-    audioplayer.stop();
-  }
-
-  Future<void> _playing_d(AudioPlayer audioplayer) async {
-    for (double i = audioplayer.volume; i <= 1; i += 0.1) {
-      await Future.delayed(const Duration(milliseconds: 500), () {
-        setState(() {
-          audioplayer.setVolume((i));
-        });
-        print("Aumentando D Pad ${audioplayer.volume}");
-      });
-      if (pad_d_bool == false) {
-        break;
-      }
-    }
-  }
-
-  Future<void> _stoping_d(AudioPlayer audioplayer) async {
-    for (double i = audioplayer.volume; i >= 0; i -= 0.1) {
-      await Future.delayed(const Duration(milliseconds: 500), () {
-        setState(() {
-          audioplayer.setVolume((i));
-        });
-        print("Diminuindo Pad D ${audioplayer.volume}");
-      });
+  void stop() {
+    if (isTransitioning) {
+      // Ignorar o clique durante a transição
+      print("Transição em andamento, ação ignorada.");
+      return;
     }
 
-    audioplayer.stop();
-  }
+    setState(() {
+      isTransitioning = true; // Bloqueia outras ações
+    });
+    String audioPath = "";
 
-  Future<void> _playing_d_sus(AudioPlayer audioplayer) async {
-    for (double i = audioplayer.volume; i <= 1; i += 0.1) {
-      await Future.delayed(const Duration(milliseconds: 500), () {
-        setState(() {
-          audioplayer.setVolume((i));
-        });
-        print("Aumentando D Sustenido Pad ${audioplayer.volume}");
-      });
-      if (pad_eb_bool == false) {
-        break;
-      }
+    // Verifica qual pad está tocando e para o áudio
+    if (cAudioPlayer_bool) {
+      _fadeOutCurrentPad(cAudioPlayer);
+      cAudioPlayer_bool = false;
     }
-  }
-
-  Future<void> _stoping_d_sus(AudioPlayer audioplayer) async {
-    for (double i = audioplayer.volume; i >= 0; i -= 0.1) {
-      await Future.delayed(const Duration(milliseconds: 500), () {
-        setState(() {
-          audioplayer.setVolume((i));
-        });
-        print("Diminuindo Pad D Sustenido ${audioplayer.volume}");
-      });
+    if (cSustenidoAudioPlayer_bool) {
+      _fadeOutCurrentPad(cSustenidoAudioPlayer);
+      cSustenidoAudioPlayer_bool = false;
+    }
+    if (dAudioPlayer_bool) {
+      _fadeOutCurrentPad(dAudioPlayer);
+      dAudioPlayer_bool = false;
+    }
+    if (dSustenidoAudioPlayer_bool) {
+      _fadeOutCurrentPad(dSustenidoAudioPlayer);
+      dSustenidoAudioPlayer_bool = false;
+    }
+    if (eAudioPlayer_bool) {
+      _fadeOutCurrentPad(eAudioPlayer);
+      eAudioPlayer_bool = false;
+    }
+    if (fAudioPlayer_bool) {
+      _fadeOutCurrentPad(fAudioPlayer);
+      fAudioPlayer_bool = false;
+    }
+    if (fSustenidoAudioPlayer_bool) {
+      _fadeOutCurrentPad(fSustenidoAudioPlayer);
+      fSustenidoAudioPlayer_bool = false;
+    }
+    if (gAudioPlayer_bool) {
+      _fadeOutCurrentPad(gAudioPlayer);
+      gAudioPlayer_bool = false;
+    }
+    if (gSustenidoAudioPlayer_bool) {
+      _fadeOutCurrentPad(gSustenidoAudioPlayer);
+      gSustenidoAudioPlayer_bool = false;
+    }
+    if (aAudioPlayer_bool) {
+      _fadeOutCurrentPad(aAudioPlayer);
+      aAudioPlayer_bool = false;
+    }
+    if (aSustenidoAudioPlayer_bool) {
+      _fadeOutCurrentPad(aSustenidoAudioPlayer);
+      aSustenidoAudioPlayer_bool = false;
+    }
+    if (bAudioPlayer_bool) {
+      _fadeOutCurrentPad(bAudioPlayer);
+      bAudioPlayer_bool = false;
     }
 
-    audioplayer.stop();
+    // Toca o novo pad com o áudio correspondente
+
+    setState(() {
+      isTransitioning = false; // Libera o bloqueio após a transição
+    });
   }
 
-  void _play_c() {
-    setState(() {
-      pad_c_bool = !pad_c_bool;
-    });
-    pad_c.setVolume(0);
-    pad_c.play(AssetSource('foundations/c.mp3'));
-    _playing_c(pad_c);
-
-    print("Playing C");
+  // Função para verificar se qualquer player está ativo
+  bool _isAnyPlayerActive() {
+    return cAudioPlayer_bool ||
+        dAudioPlayer_bool ||
+        eAudioPlayer_bool ||
+        fAudioPlayer_bool ||
+        gAudioPlayer_bool ||
+        aAudioPlayer_bool ||
+        bAudioPlayer_bool ||
+        cSustenidoAudioPlayer_bool ||
+        dSustenidoAudioPlayer_bool ||
+        fSustenidoAudioPlayer_bool ||
+        gSustenidoAudioPlayer_bool ||
+        aSustenidoAudioPlayer_bool;
   }
 
-  void _stop_c() {
-    setState(() {
-      pad_c_bool = !pad_c_bool;
-    });
-    _stoping_c(pad_c);
-
-    print("Stoping C");
-  }
-
-  void _play_c_sustenido() {
-    setState(() {
-      pad_c_sustenido_bool = !pad_c_sustenido_bool;
-    });
-    pad_c_sustenido.setVolume(0);
-    pad_c_sustenido.play(AssetSource('foundations/c#.mp3'));
-    _playing_c_sus(pad_c_sustenido);
-  }
-
-  void _stop_c_sustenido() {
-    setState(() {
-      pad_c_sustenido_bool = !pad_c_sustenido_bool;
-    });
-    _stoping_c_sus(pad_c_sustenido);
-
-    print("Stoping C#");
-  }
-
-  void _play_d() {
-    setState(() {
-      pad_d_bool = !pad_d_bool;
-    });
-    pad_d.setVolume(0);
-    pad_d.play(AssetSource('foundations/d.mp3'));
-    _playing_d(pad_d);
-
-    print("Playing D");
-  }
-
-  void _stop_d() {
-    setState(() {
-      pad_d_bool = !pad_d_bool;
-    });
-    _stoping_d(pad_d);
-    print("Stoping D");
-  }
-
-  void _play_eb() {
-    setState(() {
-      pad_eb_bool = !pad_eb_bool;
-    });
-    pad_eb.setVolume(0);
-    pad_eb.play(AssetSource('foundations/eb.mp3'));
-    _playing_d_sus(pad_eb);
-  }
-
-  void _stop_eb() {
-    setState(() {
-      pad_eb_bool = !pad_eb_bool;
-    });
-    _stoping_d_sus(pad_eb);
-
-    print("Stoping Eb");
-  }
-
-  void _play_e() {
-    pad_e.play(AssetSource('foundations/e.mp3'));
-    setState(() {
-      pad_e_bool = !pad_e_bool; // Toggle the value
-    });
-    print("Playing E");
-  }
-
-  void _stop_e() {
-    pad_e.stop();
-    setState(() {
-      pad_e_bool = !pad_e_bool; // Toggle the value
-    });
-    print("Stoping E");
-  }
-
-  void _play_f() {
-    pad_f.play(AssetSource('foundations/f.mp3'));
-    setState(() {
-      pad_f_bool = !pad_f_bool; // Toggle the value
-    });
-    print("Playing F");
-  }
-
-  void _stop_f() {
-    pad_f.stop();
-    setState(() {
-      pad_f_bool = !pad_f_bool; // Toggle the value
-    });
-    print("Stoping F");
-  }
-
-  void _play_gb() {
-    pad_gb.play(AssetSource('foundations/gb.mp3'));
-    setState(() {
-      pad_gb_bool = !pad_gb_bool; // Toggle the value
-    });
-    print("Playing Gb");
-  }
-
-  void _stop_gb() {
-    pad_gb.stop();
-    setState(() {
-      pad_gb_bool = !pad_gb_bool; // Toggle the value
-    });
-    print("Stoping Gb");
-  }
-
-  void _play_g() {
-    pad_g.play(AssetSource('foundations/g.mp3'));
-    setState(() {
-      pad_g_bool = !pad_g_bool; // Toggle the value
-    });
-    print("Playing Gb");
-  }
-
-  void _stop_g() {
-    pad_g.stop();
-    setState(() {
-      pad_g_bool = !pad_g_bool; // Toggle the value
-    });
-    print("Stoping Gb");
-  }
-
-  void _play_ab() {
-    pad_ab.play(AssetSource('foundations/ab.mp3'));
-    setState(() {
-      pad_ab_bool = !pad_ab_bool; // Toggle the value
-    });
-    print("Playing Gb");
-  }
-
-  void _stop_ab() {
-    pad_ab.stop();
-    setState(() {
-      pad_ab_bool = !pad_ab_bool; // Toggle the value
-    });
-    print("Stoping Gb");
-  }
-
-  void _play_a() {
-    pad_a.play(AssetSource('foundations/a.mp3'));
-    setState(() {
-      pad_a_bool = !pad_a_bool; // Toggle the value
-    });
-    print("Playing A");
-  }
-
-  void _stop_a() {
-    pad_a.stop();
-    setState(() {
-      pad_a_bool = !pad_a_bool; // Toggle the value
-    });
-    print("Stoping A");
-  }
-
-  void _play_bb() {
-    pad_bb.play(AssetSource('foundations/bb.mp3'));
-    setState(() {
-      pad_bb_bool = !pad_bb_bool; // Toggle the value
-    });
-    print("Playing A");
-  }
-
-  void _stop_bb() {
-    pad_bb.stop();
-    setState(() {
-      pad_bb_bool = !pad_bb_bool; // Toggle the value
-    });
-    print("Stoping A");
-  }
-
-  void _play_b() {
-    pad_b.play(AssetSource('foundations/b.mp3'));
-    setState(() {
-      pad_b_bool = !pad_b_bool; // Toggle the value
-    });
-    print("Playing A");
-  }
-
-  void _stop_b() {
-    pad_b.stop();
-    setState(() {
-      pad_b_bool = !pad_b_bool; // Toggle the value
-    });
-    print("Stoping A");
+  // Função para exibir o LED piscando
+  // Função para exibir o LED piscando
+  // Construção do LED
+  Widget _buildLed() {
+    return AnimatedOpacity(
+      opacity: _ledState ? 1.0 : 0.9, // Alterna opacidade entre 1.0 e 0.9
+      duration: Duration(
+          milliseconds: 500), // Duração de 500ms para suavizar o efeito
+      curve: Curves.easeInOut,
+      child: Container(
+        width: 30,
+        height: 30,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: _ledState
+              ? Colors.red
+              : Colors.black, // LED vermelho quando ativo
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    _toggleLed(); // Verificar se algum player está tocando para ativar o LED
     return Scaffold(
       backgroundColor: Colors.black,
       body: Center(
@@ -683,38 +574,14 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              _buildLed(),
+              SizedBox(
+                height: 50,
+              ),
               Column(
                 children: [
                   // Slider de controle de volume
 
-                  SliderTheme(
-                    data: SliderTheme.of(context).copyWith(
-                      activeTrackColor:
-                          Colors.red, // Cor da parte ativa do slider
-                      inactiveTrackColor:
-                          Colors.red.withOpacity(0.5), // Cor da parte inativa
-                      trackShape:
-                          RectangularSliderTrackShape(), // Forma retangular da trilha
-                      trackHeight: 16.0, // Altura do retângulo
-                      thumbColor: Colors.transparent, // Cor do "pino"
-                      thumbShape: RoundSliderThumbShape(
-                          enabledThumbRadius: 10.0,
-                          disabledThumbRadius: 0.21), // Tamanho do "pino"
-                      overlayColor: Colors.red
-                          .withOpacity(0.0), // Cor do overlay ao arrastar
-                    ),
-                    child: Slider(
-                      value: currentVolume,
-                      min: 0.0,
-                      max: 1.0,
-                      label: (currentVolume * 100).toInt().toString(),
-                      onChanged: (double value) {
-                        setState(() {
-                          _adjustVolume(value);
-                        });
-                      },
-                    ),
-                  ),
                   // Botões de aumentar e diminuir volume
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -1288,6 +1155,65 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
               ),
+              SliderTheme(
+                data: SliderTheme.of(context).copyWith(
+                  activeTrackColor: Colors.red, // Cor da parte ativa do slider
+                  inactiveTrackColor:
+                      Colors.red.withOpacity(0.5), // Cor da parte inativa
+                  trackShape:
+                      RectangularSliderTrackShape(), // Forma retangular da trilha
+                  trackHeight: 16.0, // Altura do retângulo
+                  thumbColor: Colors.transparent, // Cor do "pino"
+                  thumbShape: RoundSliderThumbShape(
+                      enabledThumbRadius: 10.0,
+                      disabledThumbRadius: 0.21), // Tamanho do "pino"
+                  overlayColor:
+                      Colors.red.withOpacity(0.0), // Cor do overlay ao arrastar
+                ),
+                child: Slider(
+                  value: currentVolume,
+                  min: 0.0,
+                  max: 1.0,
+                  label: (currentVolume * 100).toInt().toString(),
+                  onChanged: (double value) {
+                    setState(() {
+                      _adjustVolume(value);
+                    });
+                  },
+                ),
+              ),
+              ElevatedButton(
+                  style: ButtonStyle(
+                    fixedSize: WidgetStateProperty.all<Size>(Size(80, 50)),
+
+                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(color: Colors.red))),
+                    backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                      (Set<WidgetState> states) {
+                        if (bAudioPlayer_bool == true) {
+                          return Colors.transparent;
+                        } else {
+                          // Return another color if the condition is false
+                          return Colors
+                              .transparent; // Or any other color you prefer
+                        }
+                      },
+                    ),
+                    elevation: WidgetStateProperty.all(0), // Set elevation to 0
+                    overlayColor: WidgetStateProperty.all(
+                        Colors.transparent), // Remove overlay color
+                    // Add other properties as needed
+                  ),
+                  onPressed: () => {
+                        _stop2(),
+                        stop(),
+                      },
+                  child: Text(
+                    "Stop",
+                    style: TextStyle(color: Colors.red),
+                  )),
             ],
           ),
         ),
