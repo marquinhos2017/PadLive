@@ -546,7 +546,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // Construção do LED
   Widget _buildLed() {
     return AnimatedOpacity(
-      opacity: _ledState ? 1.0 : 0.9, // Alterna opacidade entre 1.0 e 0.9
+      opacity: _ledState ? 1.0 : 1, // Alterna opacidade entre 1.0 e 0.9
       duration: Duration(
           milliseconds: 500), // Duração de 500ms para suavizar o efeito
       curve: Curves.easeInOut,
@@ -589,9 +589,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-              Container(
-                child: Image.asset('assets/logo.png'),
-                margin: EdgeInsets.only(bottom: 24),
+              GestureDetector(
+                onTap: () => {
+                  _showInfoDialog(context),
+                },
+                child: Container(
+                  child: Image.asset('assets/logo.png'),
+                  margin: EdgeInsets.only(bottom: 24),
+                ),
               ),
               Container(
                 margin: EdgeInsets.only(bottom: 20),
@@ -1220,4 +1225,55 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+}
+
+void _showInfoDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        backgroundColor: Colors.black,
+        title: Text(
+          'Informações',
+          style: TextStyle(color: Colors.white),
+        ),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text(
+                'Desenvolvedor: Marcos Rodrigues',
+                style: TextStyle(color: Colors.white),
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Website: https://www.seusite.com',
+                style: TextStyle(color: Colors.white),
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Versão: 1.0.0',
+                style: TextStyle(color: Colors.white),
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Este é um aplicativo para [descrição do propósito do app].',
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            child: Text(
+              'Fechar',
+              style: TextStyle(color: Colors.blue),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop(); // Fecha o dialog
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
